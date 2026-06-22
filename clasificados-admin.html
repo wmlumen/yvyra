@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Administrar clasificados · EnlaceHub</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body data-theme="dark">
+  <header class="shell topbar">
+    <a class="brand" href="index.html">EnlaceHub</a>
+    <nav class="nav" aria-label="Principal">
+      <a href="clasificados.html">Ver clasificados</a>
+      <a href="dashboard.html">Panel</a>
+      <a href="miniweb.html">Miniweb</a>
+      <a href="shortener.html">Acortador</a>
+    </nav>
+  </header>
+
+  <main class="shell grid">
+    <section class="card">
+      <p class="eyebrow">Gestión local</p>
+      <h1>Publicar un clasificado</h1>
+      <form id="classified-form" class="stack">
+        <input type="hidden" id="classified-editing-id">
+        <div class="form-row"><label for="ad-title">Título</label><input id="ad-title" required minlength="5" maxlength="120"></div>
+        <div class="form-row"><label for="ad-description">Descripción</label><textarea id="ad-description" required minlength="15" maxlength="1000"></textarea></div>
+        <div class="form-row"><label for="ad-category">Categoría</label><select id="ad-category" required></select></div>
+        <div class="form-split">
+          <div class="form-row"><label for="ad-price">Precio opcional</label><input id="ad-price" type="number" min="0" step="0.01"></div>
+          <div class="form-row"><label for="ad-currency">Moneda</label><select id="ad-currency"><option>USD</option><option>EUR</option><option>PHP</option><option>COP</option><option>MXN</option></select></div>
+        </div>
+        <div class="form-row"><label for="ad-location">Ubicación</label><input id="ad-location" maxlength="120" placeholder="Ciudad, zona o Remoto"></div>
+        <div class="form-row"><label for="ad-contact">Enlace de contacto</label><input id="ad-contact" required inputmode="url" placeholder="https://..."></div>
+        <div class="form-row"><label for="ad-image">Imagen opcional</label><input id="ad-image" inputmode="url" placeholder="https://..."></div>
+        <div class="form-row"><label for="ad-expires">Caduca, opcional</label><input id="ad-expires" type="datetime-local"></div>
+        <label class="inline"><input id="ad-active" type="checkbox" checked> Anuncio activo</label>
+        <label class="inline"><input id="ad-featured" type="checkbox"> Anuncio destacado</label>
+        <div class="actions">
+          <button class="button primary" type="submit">Guardar anuncio</button>
+          <button class="button" id="ad-cancel-edit" type="button" hidden>Cancelar edición</button>
+        </div>
+        <p id="classified-form-message" class="notice" hidden aria-live="polite"></p>
+      </form>
+    </section>
+
+    <section class="card">
+      <div class="item-head"><h2>Anuncios creados</h2><span class="badge" id="classified-admin-count"></span></div>
+      <div id="classified-admin-list" class="stack"></div>
+    </section>
+  </main>
+  <script type="module" src="src/classifieds-admin.mjs"></script>
+</body>
+</html>

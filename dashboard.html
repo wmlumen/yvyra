@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Panel · EnlaceHub</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body data-theme="dark">
+  <header class="shell topbar">
+    <a class="brand" href="profile.html">✨ EnlaceHub</a>
+    <nav class="nav" aria-label="Principal">
+      <a href="profile.html">Ver árbol</a>
+      <a href="miniweb.html">Ver miniweb</a>
+      <a href="miniweb-admin.html">Editar miniweb</a>
+      <a href="clasificados.html">Clasificados</a>
+      <a href="shortener.html">Acortador</a>
+    </nav>
+    <div class="user-badge" id="user-badge" style="display:flex;align-items:center;gap:8px;padding:4px 10px 4px 4px;border-radius:30px;background:var(--surface);border:1px solid var(--border);font-size:.85rem;">
+      <span id="user-avatar" class="avatar-small" style="width:28px;height:28px;border-radius:50%;background:var(--accent);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-weight:800;font-size:.7rem;">EH</span>
+      <span id="user-name-display" style="font-weight:600;"></span>
+      <span id="user-subdomain-display" class="muted" style="font-size:.75rem;"></span>
+      <button id="logout-btn" class="button" style="padding:4px 10px;margin-left:4px;font-size:.75rem;" type="button">Salir</button>
+    </div>
+  </header>
+  <main class="shell grid">
+    <section class="stack">
+      <div id="welcome-banner" class="card" style="background:linear-gradient(135deg,var(--accent),#4a4ac0);color:#fff;border:none;display:none;">
+        <h2 id="welcome-heading" style="margin:0;font-size:1.3rem;">Bienvenido, <span id="welcome-name"></span></h2>
+        <p id="welcome-text" class="muted" style="color:rgba(255,255,255,.8);margin-top:4px;">Tu espacio ya está listo. Completa tu perfil y comienza a añadir enlaces.</p>
+      </div>
+      <article class="card" id="onboarding-card">
+        <div style="display: flex; justify-content: space-between; align-items: flex-end;">
+          <div>
+            <p class="eyebrow">Configuración inicial</p>
+            <h2>Completa tu perfil</h2>
+          </div>
+          <strong id="progress-text" style="font-size: 2rem; color: var(--accent); line-height: 1;">0%</strong>
+        </div>
+        <div class="progress-container">
+          <div class="progress-fill" id="progress-bar"></div>
+        </div>
+        <ul class="checklist" id="onboarding-checklist">
+          <li id="check-account" class="done">Cuenta creada</li>
+          <li id="check-profile">Perfil y apariencia personalizados</li>
+          <li id="check-links">Primer enlace añadido</li>
+          <li id="check-premium">Servicios Premium (Miniweb o Clasificados) activados</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <h2>Perfil y árbol principal</h2>
+        <form id="profile-form" class="stack">
+          <div class="form-row"><label for="name">Nombre</label><input id="name" required maxlength="80"></div>
+          <div class="form-row"><label for="handle">Identificador</label><input id="handle" maxlength="80"></div>
+          <div class="form-row"><label for="subdomain">Subdominio público</label><input id="subdomain" required maxlength="48" pattern="[a-z0-9][a-z0-9-]{1,46}[a-z0-9]" placeholder="orlando" aria-describedby="subdomain-help"><small id="subdomain-help" class="muted">Se publicará como <strong>subdominio.tuplataforma.com</strong>. Usa letras, números y guiones.</small></div>
+          <div class="form-row"><label for="bio">Descripción</label><textarea id="bio" maxlength="220"></textarea></div>
+          <div class="form-row"><label for="avatar">Iniciales o emoji</label><input id="avatar" maxlength="4"></div>
+          <div class="form-row"><label for="theme">Tema</label><select id="theme"><option value="clean">Claro</option><option value="dark">Oscuro</option><option value="aurora">Aurora</option></select></div>
+          <button class="button primary" type="submit">Guardar perfil</button>
+        </form>
+      </article>
+
+      <article class="card">
+        <h2>Plantilla y personalización</h2>
+        <form id="profile-design-form" class="stack">
+          <div class="form-row">
+            <label for="profile-intro-input">Texto de bienvenida</label>
+            <textarea id="profile-intro-input" maxlength="260" placeholder="Explica en una línea qué encontrará la persona al entrar."></textarea>
+          </div>
+
+          <div class="form-row">
+            <label>Redes sociales visibles arriba</label>
+            <div class="form-split">
+              <input id="social-instagram" placeholder="Instagram URL">
+              <input id="social-facebook" placeholder="Facebook URL">
+              <input id="social-tiktok" placeholder="TikTok URL">
+              <input id="social-youtube" placeholder="YouTube URL">
+              <input id="social-whatsapp" placeholder="WhatsApp URL">
+              <input id="social-telegram" placeholder="Telegram URL">
+            </div>
+          </div>
+
+          <div class="sheet-editor-grid">
+            <section class="sheet-editor-card">
+              <p class="eyebrow">Hoja 1</p>
+              <div class="form-row"><label for="sheet-1-title">Título</label><input id="sheet-1-title" maxlength="60" placeholder="Servicios"></div>
+              <div class="form-row"><label for="sheet-1-body">Resumen</label><textarea id="sheet-1-body" maxlength="240" placeholder="Explica el contenido de esta hoja."></textarea></div>
+              <div class="form-row"><label for="sheet-1-cta-label">Botón</label><input id="sheet-1-cta-label" maxlength="40" placeholder="Ver servicios"></div>
+              <div class="form-row"><label for="sheet-1-cta-url">Enlace</label><input id="sheet-1-cta-url" placeholder="https://..."></div>
+            </section>
+
+            <section class="sheet-editor-card">
+              <p class="eyebrow">Hoja 2</p>
+              <div class="form-row"><label for="sheet-2-title">Título</label><input id="sheet-2-title" maxlength="60" placeholder="Portafolio"></div>
+              <div class="form-row"><label for="sheet-2-body">Resumen</label><textarea id="sheet-2-body" maxlength="240" placeholder="Explica el contenido de esta hoja."></textarea></div>
+              <div class="form-row"><label for="sheet-2-cta-label">Botón</label><input id="sheet-2-cta-label" maxlength="40" placeholder="Ver trabajos"></div>
+              <div class="form-row"><label for="sheet-2-cta-url">Enlace</label><input id="sheet-2-cta-url" placeholder="https://..."></div>
+            </section>
+
+            <section class="sheet-editor-card">
+              <p class="eyebrow">Hoja 3</p>
+              <div class="form-row"><label for="sheet-3-title">Título</label><input id="sheet-3-title" maxlength="60" placeholder="Testimonios"></div>
+              <div class="form-row"><label for="sheet-3-body">Resumen</label><textarea id="sheet-3-body" maxlength="240" placeholder="Explica el contenido de esta hoja."></textarea></div>
+              <div class="form-row"><label for="sheet-3-cta-label">Botón</label><input id="sheet-3-cta-label" maxlength="40" placeholder="Ver testimonios"></div>
+              <div class="form-row"><label for="sheet-3-cta-url">Enlace</label><input id="sheet-3-cta-url" placeholder="https://..."></div>
+            </section>
+          </div>
+
+          <div class="actions">
+            <button class="button primary" type="submit">Guardar diseño del perfil</button>
+          </div>
+          <p id="profile-design-message" class="notice" hidden aria-live="polite"></p>
+        </form>
+      </article>
+
+      <article class="card">
+        <h2>Nuevo enlace</h2>
+        <form id="link-form" class="stack">
+          <input type="hidden" id="editing-id">
+          <div class="form-row"><label for="link-title">Título</label><input id="link-title" required maxlength="100"></div>
+          <div class="form-row"><label for="link-url">URL</label><input id="link-url" required inputmode="url" placeholder="https://..."></div>
+          <div class="form-row"><label for="start-at">Inicio opcional</label><input id="start-at" type="datetime-local"></div>
+          <div class="form-row"><label for="end-at">Fin opcional</label><input id="end-at" type="datetime-local"></div>
+          <label class="inline"><input id="active" type="checkbox" checked> Enlace activo</label>
+          <div class="actions"><button class="button primary" type="submit">Guardar enlace</button><button class="button" id="cancel-edit" type="button" hidden>Cancelar edición</button></div>
+          <p id="form-message" class="notice" hidden aria-live="polite"></p>
+        </form>
+      </article>
+
+      <article class="card">
+        <div class="item-head"><h2>Mis enlaces</h2><span class="badge" id="link-count"></span></div>
+        <div id="links-admin" class="stack"></div>
+      </article>
+    </section>
+
+    <aside class="stack">
+      <article class="card">
+        <p class="eyebrow">Espacio propio</p>
+        <h2>URLs del subdominio</h2>
+        <p class="muted">En producción, todas las páginas del usuario viven bajo un subdominio único.</p>
+        <div class="stack" id="tenant-urls">
+          <a class="button" id="tenant-tree-url" href="profile.html" target="_blank" rel="noopener">Árbol</a>
+          <a class="button" id="tenant-classifieds-url" href="clasificados.html" target="_blank" rel="noopener">Clasificados</a>
+          <a class="button" id="tenant-web-url" href="miniweb.html" target="_blank" rel="noopener">Miniweb</a>
+        </div>
+        <p id="subdomain-message" class="notice" hidden aria-live="polite"></p>
+      </article>
+
+      <article class="card">
+        <p class="eyebrow">Embudo legítimo</p>
+        <h2>Compartir el árbol por WhatsApp</h2>
+        <p class="muted">Genera un enlace con identificación de campaña. Solo mide visitas reales; no crea tráfico artificial.</p>
+        <form id="whatsapp-form" class="stack">
+          <div class="form-row"><label for="campaign-name">Nombre de campaña</label><input id="campaign-name" value="whatsapp-general" maxlength="80"></div>
+          <div class="form-row"><label for="share-message">Mensaje</label><textarea id="share-message" maxlength="500">Hola, visita mi página para ver mis enlaces, servicios y clasificados.</textarea></div>
+          <div class="form-row"><label for="tracked-link">Enlace generado</label><input id="tracked-link" readonly></div>
+          <div class="actions">
+            <button class="button primary" type="submit">Abrir WhatsApp</button>
+            <button class="button" id="copy-tracked-link" type="button">Copiar enlace</button>
+          </div>
+          <p id="whatsapp-message" class="notice" hidden aria-live="polite"></p>
+        </form>
+      </article>
+
+      <article class="card">
+        <h2>Analíticas (Próximamente)</h2>
+        <div class="metric-grid four">
+          <div class="metric"><span class="muted">Vistas</span><strong id="metric-views">0</strong></div>
+          <div class="metric"><span class="muted">Clics</span><strong id="metric-clicks">0</strong></div>
+          <div class="metric"><span class="muted">Visitantes</span><strong id="metric-visitors">0</strong></div>
+          <div class="metric"><span class="muted">Desde WhatsApp</span><strong id="metric-whatsapp">0</strong></div>
+        </div>
+      </article>
+
+      <article class="card">
+        <h2>Productos conectados</h2>
+        <div class="stack">
+          <a class="button" href="miniweb-admin.html">Crear miniweb HTML</a>
+          <a class="button" href="clasificados-admin.html">Administrar clasificados</a>
+          <a class="button" href="miniweb.html">Ver miniweb pública</a>
+        </div>
+      </article>
+
+    </aside>
+  </main>
+  <script type="module" src="src/dashboard.mjs"></script>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Acortador · EnlaceHub</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body data-theme="dark">
+  <header class="shell topbar">
+    <a class="brand" href="index.html">EnlaceHub</a>
+    <nav class="nav" aria-label="Principal">
+      <a href="index.html">Ver página</a>
+      <a href="dashboard.html">Panel</a>
+      <a href="miniweb.html">Miniweb</a>
+    </nav>
+  </header>
+  <main class="shell grid">
+    <section class="card">
+      <h1>Acortador local</h1>
+      <p class="muted">Genera un enlace demostrativo que se resuelve mediante el hash del navegador.</p>
+      <form id="short-form" class="stack">
+        <div class="form-row"><label for="destination">URL de destino</label><input id="destination" required inputmode="url" placeholder="https://..."></div>
+        <div class="form-row"><label for="slug">Slug personalizado, opcional</label><input id="slug" maxlength="48" placeholder="mi-campana"></div>
+        <button class="button primary" type="submit">Crear enlace corto</button>
+        <p id="short-message" class="notice" hidden></p>
+      </form>
+    </section>
+    <section class="card">
+      <h2>Enlaces creados</h2>
+      <div id="short-list" class="stack"></div>
+    </section>
+  </main>
+  <script type="module" src="src/shortener.mjs"></script>
+</body>
+</html>

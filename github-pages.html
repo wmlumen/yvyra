@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Configurar Demo · EnlaceHub</title>
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body data-theme="dark">
+  <div class="shell">
+    <header class="topbar">
+      <a href="index.html" class="brand">EnlaceHub Demo</a>
+      <nav class="nav">
+        <a href="index.html">Inicio</a>
+        <a href="profile.html?tenant=milibeats">Perfil Demo</a>
+        <a href="clasificados.html">Clasificados</a>
+      </nav>
+    </header>
+
+    <main class="auth-page">
+      <section class="card auth-card" style="max-width: 860px;">
+        <h1 class="holographic-text">Demo estática para GitHub Pages</h1>
+        <p class="muted">
+          Esta página publica el frontend en GitHub Pages. Para usar login, dashboard,
+          clasificados y perfiles en modo real, apunta el frontend a un backend Express activo.
+        </p>
+
+        <div class="stack" style="text-align: left; margin-top: 24px;">
+          <div class="form-row">
+            <label for="api-base">URL base del backend</label>
+            <input id="api-base" type="url" placeholder="https://tu-backend.example.com/api">
+            <small class="muted">Debe incluir `/api` al final.</small>
+          </div>
+          <button id="open-demo" class="button primary" type="button">Abrir demo conectada</button>
+          <p class="notice">Ejemplo local: `http://localhost:3000/api`</p>
+        </div>
+
+        <div class="stack" style="margin-top: 28px; text-align: left;">
+          <h2>Rutas sugeridas</h2>
+          <p><a id="profile-link" href="profile.html?tenant=milibeats">Perfil demo</a></p>
+          <p><a id="classifieds-link" href="clasificados.html">Clasificados demo</a></p>
+          <p><a id="login-link" href="login.html">Login</a></p>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script type="module">
+    const input = document.getElementById('api-base');
+    const openButton = document.getElementById('open-demo');
+    const links = [
+      document.getElementById('profile-link'),
+      document.getElementById('classifieds-link'),
+      document.getElementById('login-link')
+    ];
+
+    function applyApiToLinks() {
+      const apiBase = input.value.trim();
+      for (const link of links) {
+        const url = new URL(link.getAttribute('href'), window.location.href);
+        if (apiBase) {
+          url.searchParams.set('api', apiBase);
+        } else {
+          url.searchParams.delete('api');
+        }
+        link.href = url.pathname + url.search + url.hash;
+      }
+    }
+
+    input.addEventListener('input', applyApiToLinks);
+    openButton.addEventListener('click', () => {
+      applyApiToLinks();
+      window.location.href = links[0].href;
+    });
+
+    applyApiToLinks();
+  </script>
+</body>
+</html>

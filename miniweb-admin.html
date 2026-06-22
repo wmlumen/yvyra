@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Constructor de miniweb · EnlaceHub</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body data-theme="dark">
+  <header class="shell topbar">
+    <a class="brand" href="index.html">EnlaceHub</a>
+    <nav class="nav" aria-label="Principal">
+      <a href="dashboard.html">Panel del árbol</a>
+      <a href="miniweb.html">Ver miniweb</a>
+      <a href="clasificados-admin.html">Clasificados</a>
+    </nav>
+  </header>
+
+  <main class="shell grid">
+    <section class="card">
+      <p class="eyebrow">Sitio conectado al árbol</p>
+      <h1>Crear página web básica</h1>
+      <p class="muted">Completa el contenido y genera una miniweb sencilla. Puedes usar la versión alojada por la plataforma o descargar un archivo HTML independiente.</p>
+      <form id="mini-site-form" class="stack">
+        <div class="form-row"><label for="business-name">Nombre del negocio o proyecto</label><input id="business-name" required maxlength="100"></div>
+        <div class="form-row"><label for="headline">Título principal</label><input id="headline" required maxlength="160"></div>
+        <div class="form-row"><label for="site-description">Descripción</label><textarea id="site-description" required maxlength="600"></textarea></div>
+        <div class="form-row"><label for="services">Servicios, uno por línea</label><textarea id="services" maxlength="800"></textarea></div>
+        <div class="form-split">
+          <div class="form-row"><label for="site-whatsapp">WhatsApp con código de país</label><input id="site-whatsapp" inputmode="tel" placeholder="Ej. 639171234567"></div>
+          <div class="form-row"><label for="site-email">Correo</label><input id="site-email" type="email"></div>
+        </div>
+        <div class="form-row"><label for="site-address">Ubicación o modalidad</label><input id="site-address" maxlength="160"></div>
+        <div class="form-split">
+          <div class="form-row"><label for="cta-label">Texto del botón principal</label><input id="cta-label" maxlength="80"></div>
+          <div class="form-row"><label for="cta-url">Destino del botón</label><input id="cta-url" placeholder="index.html o https://..."></div>
+        </div>
+        <label class="inline"><input id="show-classifieds" type="checkbox" checked> Mostrar clasificados destacados</label>
+        <label class="inline"><input id="site-published" type="checkbox" checked> Miniweb visible</label>
+        <div class="actions">
+          <button class="button primary" type="submit">Guardar miniweb</button>
+          <button class="button" id="download-html" type="button">Descargar index.html</button>
+          <a class="button" href="miniweb.html" target="_blank" rel="noopener">Vista previa</a>
+        </div>
+        <p id="mini-site-message" class="notice" hidden aria-live="polite"></p>
+      </form>
+    </section>
+
+    <aside class="stack">
+      <article class="card">
+        <h2>Publicación gratuita</h2>
+        <p class="muted">La versión de producción puede publicar el HTML mediante una cuenta de servicio en Cloudflare Pages o Netlify. Los tokens deben permanecer exclusivamente en el servidor.</p>
+        <ol class="compact-list">
+          <li>El usuario completa la miniweb.</li>
+          <li>El servidor genera archivos estáticos.</li>
+          <li>Un trabajo de despliegue los publica.</li>
+          <li>La plataforma guarda la URL resultante.</li>
+        </ol>
+      </article>
+      <article class="card">
+        <h2>Rutas conectadas</h2>
+        <p><code>/usuario</code> — árbol principal</p>
+        <p><code>/usuario/web</code> — miniweb</p>
+        <p><code>/usuario/clasificados</code> — anuncios</p>
+      </article>
+      <article class="card safety-note">
+        <h2>Medición correcta</h2>
+        <p class="muted">Se permiten campañas, códigos de origen y analíticas de visitas reales. No se generan bots, clics automáticos ni métricas falsas.</p>
+      </article>
+    </aside>
+  </main>
+  <script type="module" src="src/miniweb-admin.mjs"></script>
+</body>
+</html>

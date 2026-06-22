@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <!-- SEO Básico -->
+  <title>Clasificados de la Comunidad · EnlaceHub</title>
+  <meta name="description" content="Encuentra los mejores clasificados, productos y servicios ofrecidos por nuestra comunidad. Compra y venta directa y fácil.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://tuplataforma.com/clasificados.html">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://tuplataforma.com/clasificados.html">
+  <meta property="og:title" content="Clasificados de la Comunidad · EnlaceHub">
+  <meta property="og:description" content="Encuentra los mejores clasificados, productos y servicios ofrecidos por nuestra comunidad. Compra y venta directa y fácil.">
+  <meta property="og:image" content="https://tuplataforma.com/assets/og-image-classifieds.jpg">
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://tuplataforma.com/clasificados.html">
+  <meta property="twitter:title" content="Clasificados de la Comunidad · EnlaceHub">
+  <meta property="twitter:description" content="Encuentra los mejores clasificados, productos y servicios ofrecidos por nuestra comunidad. Compra y venta directa y fácil.">
+  <meta property="twitter:image" content="https://tuplataforma.com/assets/og-image-classifieds.jpg">
+
+  <!-- Datos Estructurados (JSON-LD) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": "Clasificados de la Comunidad",
+    "description": "Directorio de clasificados y servicios locales.",
+    "url": "https://tuplataforma.com/clasificados.html"
+  }
+  </script>
+
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body data-theme="dark">
+  <header class="shell topbar">
+    <a class="brand" href="index.html">EnlaceHub</a>
+    <nav class="nav" aria-label="Principal">
+      <a href="index.html">Página principal</a>
+      <a href="clasificados-admin.html">Publicar o administrar</a>
+      <a href="dashboard.html">Panel</a>
+      <a href="miniweb.html">Miniweb</a>
+    </nav>
+  </header>
+
+  <main class="shell catalog-page">
+    <section class="catalog-hero">
+      <p class="eyebrow">Módulo secundario</p>
+      <h1>Clasificados</h1>
+      <p class="muted">Anuncios organizados y conectados indirectamente desde el árbol de enlaces.</p>
+    </section>
+
+    <section class="card filter-panel" aria-labelledby="filter-title">
+      <h2 id="filter-title">Buscar anuncios</h2>
+      <form id="classified-filters" class="filter-grid">
+        <div class="form-row">
+          <label for="classified-search">Palabra clave</label>
+          <input id="classified-search" type="search" placeholder="Ej. diseño, laptop, empleo">
+        </div>
+        <div class="form-row">
+          <label for="classified-category">Categoría</label>
+          <select id="classified-category"><option value="">Todas</option></select>
+        </div>
+        <div class="form-row">
+          <label for="classified-sort">Orden</label>
+          <select id="classified-sort">
+            <option value="featured">Destacados primero</option>
+            <option value="newest">Más recientes</option>
+            <option value="price-asc">Menor precio</option>
+            <option value="price-desc">Mayor precio</option>
+          </select>
+        </div>
+      </form>
+      <p id="classified-count" class="muted" aria-live="polite"></p>
+    </section>
+
+    <section id="classified-list" class="classified-grid" aria-label="Listado de anuncios"></section>
+
+    <aside class="card safety-note">
+      <h2>Compra y contacto responsables</h2>
+      <p class="muted">No envíes contraseñas ni pagos anticipados sin verificar a la otra parte. Esta demo no procesa pagos ni garantiza las publicaciones.</p>
+    </aside>
+  </main>
+
+  <footer>Clasificados derivados de EnlaceHub · Datos de demostración guardados localmente</footer>
+  <script type="module" src="src/classifieds.mjs"></script>
+</body>
+</html>

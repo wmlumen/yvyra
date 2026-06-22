@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <!-- SEO Básico -->
+  <title>Negocio Local · EnlaceHub</title>
+  <meta name="description" content="Conoce nuestros servicios, información de contacto y ofertas especiales. Tu negocio local de confianza conectado a través de EnlaceHub.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://tuplataforma.com/miniweb.html">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://tuplataforma.com/miniweb.html">
+  <meta property="og:title" content="Negocio Local · EnlaceHub">
+  <meta property="og:description" content="Conoce nuestros servicios, información de contacto y ofertas especiales. Tu negocio local de confianza conectado a través de EnlaceHub.">
+  <meta property="og:image" content="https://tuplataforma.com/assets/og-image-miniweb.jpg">
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://tuplataforma.com/miniweb.html">
+  <meta property="twitter:title" content="Negocio Local · EnlaceHub">
+  <meta property="twitter:description" content="Conoce nuestros servicios, información de contacto y ofertas especiales. Tu negocio local de confianza conectado a través de EnlaceHub.">
+  <meta property="twitter:image" content="https://tuplataforma.com/assets/og-image-miniweb.jpg">
+
+  <!-- Datos Estructurados (JSON-LD) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "name": "Negocio Local",
+    "description": "Servicios e información de contacto.",
+    "url": "https://tuplataforma.com/miniweb.html"
+  }
+  </script>
+
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body data-theme="dark">
+  <header class="shell topbar">
+    <a class="brand" href="index.html">EnlaceHub</a>
+    <nav class="nav" aria-label="Principal">
+      <a href="index.html">Árbol</a>
+      <a href="clasificados.html">Clasificados</a>
+      <a href="miniweb-admin.html">Editar miniweb</a>
+    </nav>
+  </header>
+
+  <main id="mini-site" class="shell mini-site-page">
+    <section class="mini-hero">
+      <p class="eyebrow" id="mini-handle"></p>
+      <h1 id="mini-business-name"></h1>
+      <h2 id="mini-headline"></h2>
+      <p class="mini-description" id="mini-description"></p>
+      <div class="actions">
+        <a class="button primary" id="mini-primary-cta" href="index.html">Ver árbol</a>
+        <a class="button" id="mini-whatsapp-cta" hidden>WhatsApp</a>
+      </div>
+    </section>
+
+    <section class="card mini-section" id="mini-services-section">
+      <h2>Servicios</h2>
+      <ul id="mini-services" class="service-grid"></ul>
+    </section>
+
+    <section class="mini-section" id="mini-classifieds-section">
+      <div class="item-head"><h2>Clasificados destacados</h2><a href="clasificados.html">Ver todos</a></div>
+      <div id="mini-classifieds" class="classified-grid"></div>
+    </section>
+
+    <section class="card mini-section">
+      <h2>Contacto</h2>
+      <p id="mini-address" class="muted"></p>
+      <div class="actions" id="mini-contact-links"></div>
+    </section>
+  </main>
+  <footer>Página web básica generada desde el árbol de enlaces</footer>
+  <script type="module" src="src/miniweb.mjs"></script>
+</body>
+</html>

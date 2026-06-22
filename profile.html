@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <!-- SEO Básico -->
+  <title>EnlaceHub - Tu Árbol de Enlaces y Servicios</title>
+  <meta name="description" content="Descubre todos mis enlaces, servicios y clasificados en un solo lugar. Conecta conmigo de forma fácil y rápida a través de EnlaceHub.">
+  <meta name="robots" content="index, follow">
+  <meta name="author" content="EnlaceHub User">
+  <link rel="canonical" href="https://tuplataforma.com/index.html">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="profile">
+  <meta property="og:url" content="https://tuplataforma.com/index.html">
+  <meta property="og:title" content="EnlaceHub - Tu Árbol de Enlaces y Servicios">
+  <meta property="og:description" content="Descubre todos mis enlaces, servicios y clasificados en un solo lugar. Conecta conmigo de forma fácil y rápida a través de EnlaceHub.">
+  <meta property="og:image" content="https://tuplataforma.com/assets/og-image-profile.jpg">
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://tuplataforma.com/index.html">
+  <meta property="twitter:title" content="EnlaceHub - Tu Árbol de Enlaces y Servicios">
+  <meta property="twitter:description" content="Descubre todos mis enlaces, servicios y clasificados en un solo lugar. Conecta conmigo de forma fácil y rápida a través de EnlaceHub.">
+  <meta property="twitter:image" content="https://tuplataforma.com/assets/og-image-profile.jpg">
+
+  <!-- Datos Estructurados (JSON-LD) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ProfilePage",
+    "mainEntity": {
+      "@type": "Person",
+      "name": "EnlaceHub User",
+      "description": "Descubre todos mis enlaces, servicios y clasificados en un solo lugar.",
+      "url": "https://tuplataforma.com/index.html"
+    }
+  }
+  </script>
+
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body data-theme="dark">
+  <main class="profile-page" aria-labelledby="profile-name">
+    <section class="profile-hero-card">
+      <div class="avatar" id="avatar" aria-hidden="true">EH</div>
+      <h1 id="profile-name">EnlaceHub</h1>
+      <p class="handle" id="handle"></p>
+      <p class="bio" id="bio"></p>
+      <p class="profile-intro muted" id="profile-intro" hidden></p>
+      <nav class="social-strip" id="social-strip" aria-label="Redes sociales" hidden></nav>
+      <div class="actions centered-actions">
+        <button class="button primary" id="whatsapp-share-button" type="button">Compartir por WhatsApp</button>
+        <button class="button" id="share-button" type="button">Compartir página</button>
+        <a class="button" href="dashboard.html">Editar demo</a>
+      </div>
+    </section>
+
+    <section class="profile-sections-card" aria-labelledby="profile-sections-title">
+      <div class="profile-section-head">
+        <div>
+          <p class="eyebrow">Explora tu perfil</p>
+          <h2 id="profile-sections-title">Hojas y accesos directos</h2>
+        </div>
+        <div class="sheet-controls">
+          <button class="button" id="sheet-prev" type="button" aria-label="Hoja anterior">←</button>
+          <button class="button" id="sheet-next" type="button" aria-label="Hoja siguiente">→</button>
+        </div>
+      </div>
+      <div class="sheet-tab-list" id="sheet-tab-list" aria-label="Navegación de hojas"></div>
+      <div class="sheet-stage" id="sheet-stage" aria-live="polite"></div>
+      <div class="sheet-dots" id="sheet-dots" aria-hidden="true"></div>
+      <div class="scroll-links" id="scroll-links"></div>
+    </section>
+
+    <section class="profile-stack" id="profile-stack" aria-label="Contenido del perfil"></section>
+
+    <section class="connected-products" aria-label="Páginas conectadas">
+      <a class="button" id="mini-site-link" href="miniweb.html">Página web básica</a>
+      <a class="button" href="clasificados.html">Ver clasificados</a>
+    </section>
+  </main>
+  <footer>Demo original de árbol de enlaces · Datos guardados localmente</footer>
+  <script type="module" src="src/public.mjs"></script>
+</body>
+</html>

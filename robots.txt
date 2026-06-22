@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /index.html
+Allow: /clasificados.html
+Allow: /miniweb.html
+Disallow: /dashboard.html
+Disallow: /clasificados-admin.html
+Disallow: /miniweb-admin.html
+Disallow: /shortener.html
+
+Sitemap: https://tuplataforma.com/sitemap.xml

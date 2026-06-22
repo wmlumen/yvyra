@@ -1,0 +1,141 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model User {
+  id        String      @id @default(uuid())
+  email     String      @unique
+  password  String
+  name      String
+  role      String      @default("USER")
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  workspaces Workspace[]
+}
+
+model Workspace {
+  id        String      @id @default(uuid())
+  ownerId   String
+  owner     User        @relation(fields: [ownerId], references: [id])
+  name      String
+  handle    String?
+  bio       String?
+  avatar    String?
+  theme     String?     @default("clean")
+  miniSite  String?     @default("{}")
+
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  
+  domainMappings DomainMapping[]
+  blocks         TreeBlock[]
+  shortLinks     ShortLink[]
+  analyticsEvents AnalyticsEvent[]
+}
+
+model DomainMapping {
+  id            String    @id @default(uuid())
+  workspaceId   String
+  workspace     Workspace @relation(fields: [workspaceId], references: [id])
+  hostname      String    @unique
+  type          String    // "platform_subdomain" or "custom_domain"
+  canonical     Boolean   @default(false)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model TreeBlock {
+  id          String    @id @default(uuid())
+  workspaceId String
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  
+  type        String    // "link", "classified", "product", "event", "form", etc.
+  title       String
+  order       Int       @default(0)
+  isActive    Boolean   @default(true)
+  
+  // JSONB param para datos dinámicos (ej. URL del enlace externo, fotos extra, etc) convertido a String para SQLite
+  payload     String      @default("{}")
+
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  classified  Classified?
+}
+
+model Classified {
+  id          String    @id @default(uuid())
+  blockId     String    @unique
+  block       TreeBlock @relation(fields: [blockId], references: [id], onDelete: Cascade)
+  
+  category    String
+  price       Float?
+  currency    String?
+  location    String?
+  description String
+  tags        String
+  
+  expiresAt   DateTime?
+  isFeatured  Boolean   @default(false)
+
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model ShortLink {
+  id          String    @id @default(uuid())
+  workspaceId String
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  
+  slug        String    @unique
+  url         String
+  isActive    Boolean   @default(true)
+  expiresAt   DateTime?
+  clickCount  Int       @default(0)
+
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model AnalyticsEvent {
+  id          String    @id @default(uuid())
+  workspaceId String
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  type        String    // "page_view", "link_click", "short_click", "whatsapp_share", "contact", "classified_view"
+  targetId    String?
+  visitorId   String?
+  
+  source      String?   // atribución: "whatsapp", "direct", etc.
+  medium      String?
+  campaign    String?
+
+  metadata    String?   // JSON adicional
+  ip          String?   // Solo los primeros 3 octetos, nunca completa
+
+  createdAt   DateTime  @default(now())
+
+  @@index([workspaceId, createdAt])
+  @@index([workspaceId, type])
+}
+
+model AuditLog {
+  id          String    @id @default(uuid())
+  workspaceId String?
+  userId      String?
+  
+  action      String    // "create", "update", "delete", "login", "rollback"
+  entity      String    // "user", "block", "classified", "shortlink", "domain"
+  entityId    String?
+  details     String?   // JSON con el cambio
+
+  createdAt   DateTime  @default(now())
+
+  @@index([workspaceId, createdAt])
+  @@index([userId, createdAt])
+}
