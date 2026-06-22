@@ -3,8 +3,8 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = "file:./dev.db"
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model User {
@@ -15,6 +15,8 @@ model User {
   role      String      @default("USER")
   createdAt DateTime    @default(now())
   updatedAt DateTime    @updatedAt
+  deletedAt DateTime?   // Soft delete: si tiene fecha, el usuario está "eliminado"
+
   workspaces Workspace[]
 }
 
@@ -66,6 +68,8 @@ model TreeBlock {
   updatedAt   DateTime  @updatedAt
 
   classified  Classified?
+
+  @@index([workspaceId, createdAt])
 }
 
 model Classified {
@@ -100,6 +104,8 @@ model ShortLink {
 
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
+
+  @@index([workspaceId, createdAt])
 }
 
 model AnalyticsEvent {
@@ -129,8 +135,8 @@ model AuditLog {
   workspaceId String?
   userId      String?
   
-  action      String    // "create", "update", "delete", "login", "rollback"
-  entity      String    // "user", "block", "classified", "shortlink", "domain"
+  action      String    // "create", "update", "delete", "login", "rollback", "agent_execution"
+  entity      String    // "user", "block", "classified", "shortlink", "domain", "agent"
   entityId    String?
   details     String?   // JSON con el cambio
 
@@ -138,4 +144,18 @@ model AuditLog {
 
   @@index([workspaceId, createdAt])
   @@index([userId, createdAt])
+}
+
+model AgentExecution {
+  id          String    @id @default(uuid())
+  workspaceId String
+  task        String    // Texto original de la tarea
+  plan        String    // JSON: plan generado
+  status      String    // "running", "completed", "rolled_back", "failed"
+  result      String?   // JSON: resultado completo
+  score       Int?      // Puntuación 0-100 del auditor
+  createdAt   DateTime  @default(now())
+  completedAt DateTime?
+
+  @@index([workspaceId, createdAt])
 }

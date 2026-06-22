@@ -108,8 +108,10 @@ export async function getAdminStats() {
   return res.json();
 }
 
-export async function getAdminUsers() {
-  const res = await fetch(`${API_URL}/admin/users`, { credentials: 'include' });
+export async function getAdminUsers(limit = 50, offset = 0, search = '') {
+  const params = new URLSearchParams({ limit, offset });
+  if (search) params.set('search', search);
+  const res = await fetch(`${API_URL}/admin/users?${params}`, { credentials: 'include' });
   if (!res.ok) throw new Error('Error cargando usuarios');
   return res.json();
 }
@@ -227,5 +229,45 @@ export async function updateMiniSite(data) {
 export async function getAuditLogs(limit = 50, offset = 0) {
   const res = await fetch(`${API_URL}/audit?limit=${limit}&offset=${offset}`, { credentials: 'include' });
   if (!res.ok) throw new Error('Error cargando auditoría');
+  return res.json();
+}
+
+// ─── Admin (Super Administrador) ─────────────────────────────
+
+export async function getAdminDetailedStats() {
+  const res = await fetch(`${API_URL}/admin/stats/detailed`, { credentials: 'include' });
+  if (!res.ok) throw new Error('Error cargando métricas detalladas');
+  return res.json();
+}
+
+export async function getAdminUser(id) {
+  const res = await fetch(`${API_URL}/admin/users/${id}`, { credentials: 'include' });
+  if (!res.ok) throw new Error('Error cargando usuario');
+  return res.json();
+}
+
+export async function updateUserRole(id, role) {
+  const res = await fetch(`${API_URL}/admin/users/${id}/role`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
+    body: JSON.stringify({ role })
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.error || 'Error actualizando rol');
+  }
+  return res.json();
+}
+
+export async function getAdminAudit(limit = 50, offset = 0) {
+  const res = await fetch(`${API_URL}/admin/audit?limit=${limit}&offset=${offset}`, { credentials: 'include' });
+  if (!res.ok) throw new Error('Error cargando auditoría global');
+  return res.json();
+}
+
+export async function getAdminAgentExecutions(limit = 50, offset = 0) {
+  const res = await fetch(`${API_URL}/admin/agents?limit=${limit}&offset=${offset}`, { credentials: 'include' });
+  if (!res.ok) throw new Error('Error cargando ejecuciones de agentes');
   return res.json();
 }

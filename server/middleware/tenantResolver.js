@@ -1,5 +1,4 @@
-const { PrismaClient } = require('@prisma/client');
-const prisma = new PrismaClient();
+const prisma = require('../lib/prisma');
 
 // Dominio base permitido (configurable vía entorno)
 const ALLOWED_BASE_DOMAINS = (process.env.ALLOWED_DOMAINS || 'localhost,enlacehub.example,enlacehub.com').split(',').map(d => d.trim().toLowerCase());
@@ -65,6 +64,10 @@ function normalizeExplicitTenant(value) {
  * Middleware que intercepta el header 'Host', normaliza el dominio
  * y busca en la base de datos a qué Workspace (Tenant) pertenece.
  * Agrega `req.tenantWorkspaceId` para que los controladores sepan qué datos servir.
+ * 
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ * @param {import('express').NextFunction} next
  */
 module.exports = async (req, res, next) => {
   try {

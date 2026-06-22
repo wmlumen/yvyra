@@ -1,6 +1,4 @@
-const { PrismaClient } = require('@prisma/client');
-const prisma = new PrismaClient();
-
+const prisma = require('../lib/prisma');
 // Valores por defecto para la miniweb
 const DEFAULT_MINI_SITE = {
   published: true,
@@ -251,13 +249,63 @@ function buildMiniSiteHTML(workspace, config) {
     emailLink ? `<a href="${escapeHtml(emailLink)}" class="contact-btn">Correo</a>` : ''
   ].filter(Boolean).join('\n          ');
 
+  const businessName = config.businessName || workspace.name || 'Miniweb';
+  const description = config.description || `${businessName} · Perfil digital`;
+  const siteUrl = config.primaryCtaUrl || `${workspace.handle ? `https://${workspace.handle}.enlacehub.com` : ''}`;
+  const avatarUrl = workspace.avatar ? `https://avatar.enlacehub.com/${workspace.avatar}` : '';
+  const year = new Date().getFullYear();
+
+  // JSON-LD Structured Data
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'LocalBusiness',
+    name: businessName,
+    description: description.slice(0, 160),
+    url: siteUrl || undefined,
+    image: avatarUrl || undefined,
+    email: config.email || undefined,
+    address: config.address ? { '@type': 'PostalAddress', streetAddress: config.address } : undefined,
+    ...(config.whatsapp ? { telephone: `+${config.whatsapp.replace(/\D/g, '')}` } : {}),
+    ...(Array.isArray(config.services) && config.services.length ? { makesOffer: config.services.map(s => ({ '@type': 'Offer', itemOffered: { '@type': 'Service', name: s } })) } : {})
+  };
+
   return `<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>${escapeHtml(config.businessName || workspace.name || 'Miniweb')}</title>
-  <meta name="description" content="${escapeHtml(config.description)}">
+  <title>${escapeHtml(businessName)} · ${escapeHtml(config.headline || 'Perfil digital')}</title>
+  
+  <!-- Meta tags básicos -->
+  <meta name="description" content="${escapeHtml(description.slice(0, 160))}">
+  <meta name="robots" content="index, follow">
+  <meta name="language" content="es">
+  <link rel="canonical" href="${escapeHtml(siteUrl || `${workspace.handle ? 'https://' + workspace.handle + '.enlacehub.com' : ''}`)}">
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="${escapeHtml(businessName)}">
+  <meta property="og:title" content="${escapeHtml(businessName)} · ${escapeHtml(config.headline || 'Perfil digital')}">
+  <meta property="og:description" content="${escapeHtml(description.slice(0, 160))}">
+  <meta property="og:url" content="${escapeHtml(siteUrl)}">
+  ${avatarUrl ? `<meta property="og:image" content="${escapeHtml(avatarUrl)}">` : ''}
+  <meta property="og:locale" content="es_PY">
+  
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="${escapeHtml(businessName)} · ${escapeHtml(config.headline || 'Perfil digital')}">
+  <meta name="twitter:description" content="${escapeHtml(description.slice(0, 160))}">
+  ${avatarUrl ? `<meta name="twitter:image" content="${escapeHtml(avatarUrl)}">` : ''}
+  
+  <!-- JSON-LD Structured Data -->
+  <script type="application/ld+json">
+  ${JSON.stringify(jsonLd, null, 2)}
+  </script>
+  
+  <!-- Theme color para navegadores móviles -->
+  <meta name="theme-color" content="#5b5bd6">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  
   <style>
     :root{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#172033;background:#f5f7fb;line-height:1.6}
     *{box-sizing:border-box;margin:0;padding:0}
@@ -317,7 +365,7 @@ function buildMiniSiteHTML(workspace, config) {
     </div></section>
   </main>
   <footer class="wrap">
-    <p>Generado desde EnlaceHub &middot; ${escapeHtml(config.businessName || workspace.name || '')}</p>
+    <p>&copy; ${year} ${escapeHtml(config.businessName || workspace.name || '')} &middot; Generado desde EnlaceHub</p>
   </footer>
 </body>
 </html>`;

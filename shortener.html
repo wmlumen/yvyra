@@ -6,32 +6,185 @@
   <title>Acortador · EnlaceHub</title>
   <meta name="robots" content="noindex, nofollow">
   <link rel="stylesheet" href="assets/styles.css">
+  <style>
+    .short-hero {
+      max-width: 640px; margin: 0 auto 32px; text-align: center;
+    }
+    .short-hero h1 {
+      font-size: 2rem; font-weight: 900; margin: 0 0 8px;
+    }
+    .short-hero p {
+      color: var(--muted); margin: 0 0 24px;
+    }
+    .short-form-card {
+      max-width: 640px; margin: 0 auto 40px;
+      background: var(--surface); border: 1px solid var(--border);
+      box-shadow: inset 0 0 0 1px var(--surface-border), var(--shadow);
+      backdrop-filter: blur(32px); -webkit-backdrop-filter: blur(32px);
+      border-radius: var(--radius-lg); padding: 32px;
+      animation: fadeInUp 0.5s var(--elastic) forwards;
+    }
+    .short-form-card .form-row {
+      margin-bottom: 16px;
+    }
+    .short-form-card label {
+      display: block; font-weight: 700; font-size: 0.9rem;
+      margin-bottom: 6px; color: var(--muted);
+    }
+    .short-form-card input {
+      width: 100%; padding: 14px 18px; border-radius: var(--radius-sm);
+      border: 1px solid var(--border); background: var(--surface);
+      color: var(--text); font-size: 1rem; font-family: inherit;
+      outline: none; transition: border-color 0.2s var(--smooth);
+    }
+    .short-form-card input:focus {
+      border-color: var(--accent); box-shadow: var(--glow);
+    }
+    .short-form-card .input-row {
+      display: flex; gap: 12px; align-items: stretch;
+    }
+    .short-form-card .input-row input { flex: 1; }
+    .short-form-card .input-row .button { white-space: nowrap; }
+    .short-preview {
+      margin-top: 16px; padding: 14px 18px;
+      background: color-mix(in srgb, var(--accent) 10%, transparent);
+      border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
+      border-radius: var(--radius-sm);
+      display: none; align-items: center; gap: 12px;
+      word-break: break-all; font-weight: 600; font-size: 0.95rem;
+    }
+    .short-preview.show { display: flex; }
+
+    .shortcuts {
+      display: flex; gap: 8px; flex-wrap: wrap; margin-top: 16px;
+    }
+    .shortcuts .button {
+      font-size: 0.85rem; padding: 8px 16px; min-height: 36px;
+    }
+
+    /* Lista de enlaces */
+    .short-list { margin-top: 40px; }
+    .short-list h2 {
+      font-size: 1.4rem; font-weight: 800; margin: 0 0 20px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .short-list h2 span {
+      font-size: 0.9rem; font-weight: 600; color: var(--muted);
+    }
+    .short-item {
+      display: flex; align-items: center; gap: 16px;
+      padding: 16px 20px; margin-bottom: 12px;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      box-shadow: inset 0 0 0 1px var(--surface-border), var(--shadow);
+      transition: all 0.2s var(--smooth);
+      animation: fadeInUp 0.3s var(--elastic) forwards;
+    }
+    .short-item:hover {
+      box-shadow: var(--shadow-hover); transform: translateY(-2px);
+    }
+    .short-item .info { flex: 1; min-width: 0; }
+    .short-item .short-url {
+      font-weight: 700; font-size: 1rem; color: var(--accent);
+      cursor: pointer; display: flex; align-items: center; gap: 6px;
+    }
+    .short-item .short-url:hover { text-decoration: underline; }
+    .short-item .short-url .badge-copy {
+      font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
+      padding: 2px 8px; border-radius: 20px; background: color-mix(in srgb, var(--accent) 15%, transparent);
+      color: var(--accent); letter-spacing: 0.5px;
+    }
+    .short-item .destination {
+      color: var(--muted); font-size: 0.85rem;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      margin-top: 2px;
+    }
+    .short-item .actions {
+      display: flex; gap: 6px; flex-shrink: 0;
+    }
+    .short-item .actions .button {
+      padding: 8px 14px; min-height: 36px; font-size: 0.8rem;
+    }
+    .short-item .meta {
+      display: flex; gap: 16px; margin-top: 4px;
+      font-size: 0.8rem; color: var(--muted);
+    }
+    .short-item.inactive { opacity: 0.5; }
+    .short-item.inactive .short-url { color: var(--muted); }
+
+    .empty-state {
+      text-align: center; padding: 60px 20px;
+      border: 2px dashed color-mix(in srgb, var(--border) 60%, transparent);
+      border-radius: var(--radius-lg); color: var(--muted);
+      background: color-mix(in srgb, var(--surface) 30%, transparent);
+    }
+    .empty-state .icon { font-size: 3rem; display: block; margin-bottom: 16px; }
+    .empty-state p { font-weight: 600; margin: 0; }
+
+    @media (max-width: 640px) {
+      .short-item { flex-direction: column; align-items: stretch; }
+      .short-item .actions { justify-content: flex-end; }
+      .short-form-card .input-row { flex-direction: column; }
+    }
+  </style>
 </head>
 <body data-theme="dark">
   <header class="shell topbar">
     <a class="brand" href="index.html">EnlaceHub</a>
     <nav class="nav" aria-label="Principal">
-      <a href="index.html">Ver página</a>
       <a href="dashboard.html">Panel</a>
       <a href="miniweb.html">Miniweb</a>
+      <a href="clasificados-admin.html">Clasificados</a>
     </nav>
   </header>
-  <main class="shell grid">
-    <section class="card">
-      <h1>Acortador local</h1>
-      <p class="muted">Genera un enlace demostrativo que se resuelve mediante el hash del navegador.</p>
-      <form id="short-form" class="stack">
-        <div class="form-row"><label for="destination">URL de destino</label><input id="destination" required inputmode="url" placeholder="https://..."></div>
-        <div class="form-row"><label for="slug">Slug personalizado, opcional</label><input id="slug" maxlength="48" placeholder="mi-campana"></div>
-        <button class="button primary" type="submit">Crear enlace corto</button>
-        <p id="short-message" class="notice" hidden></p>
+
+  <main class="shell" style="padding-bottom: 100px;">
+    <div class="short-hero">
+      <h1 class="holographic-text">Acortador</h1>
+      <p>Pega tu enlace largo y obtén uno corto al instante. Listo para compartir.</p>
+    </div>
+
+    <div class="short-form-card">
+      <form id="short-form">
+        <div class="form-row">
+          <label for="destination">URL de destino</label>
+          <div class="input-row">
+            <input id="destination" required inputmode="url" placeholder="https://tudominio.com/pagina-muy-larga-que-quieres-compartir" autofocus>
+            <button class="button primary" type="submit" style="padding-left:28px;padding-right:28px;">Acortar</button>
+          </div>
+        </div>
+        <div class="form-row" style="margin-bottom:0;">
+          <label for="slug">Slug personalizado <span style="font-weight:400;color:var(--muted);">(opcional, si no pones uno lo generamos automáticamente)</span></label>
+          <input id="slug" maxlength="48" placeholder="ej: oferta-verano">
+        </div>
       </form>
-    </section>
-    <section class="card">
-      <h2>Enlaces creados</h2>
-      <div id="short-list" class="stack"></div>
-    </section>
+
+      <div id="short-preview" class="short-preview">
+        <span>🔗</span>
+        <span id="preview-url"></span>
+        <button class="button" id="copy-preview-btn" style="margin-left:auto;flex-shrink:0;padding:6px 16px;min-height:32px;font-size:0.8rem;">Copiar</button>
+      </div>
+
+      <div class="shortcuts">
+        <span style="font-size:0.85rem;color:var(--muted);font-weight:600;padding:8px 0;">Acceso rápido:</span>
+        <button class="button" data-url="https://wa.me/5491123456789?text=Hola%20vi%20tu%20web" data-slug="whatsapp">📱 WhatsApp</button>
+        <button class="button" data-url="https://instagram.com/tuusuario" data-slug="instagram">📸 Instagram</button>
+        <button class="button" data-url="https://www.google.com/maps/place/Tu+Negocio" data-slug="ubicacion">📍 Ubicación</button>
+        <button class="button" data-url="https://linktr.ee/tuusuario" data-slug="links">🔗 Linktree</button>
+      </div>
+    </div>
+
+    <div class="short-list">
+      <h2>Enlaces cortos <span id="count-badge"></span></h2>
+      <div id="short-list-container">
+        <div class="empty-state" id="empty-state">
+          <span class="icon">✂️</span>
+          <p>Todavía no hay enlaces. Pega una URL arriba y empieza.</p>
+        </div>
+      </div>
+    </div>
   </main>
+
   <script type="module" src="src/shortener.mjs"></script>
 </body>
 </html>

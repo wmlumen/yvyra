@@ -1,89 +1,74 @@
-const { PrismaClient } = require('@prisma/client');
-const prisma = new PrismaClient();
+/**
+ * Controlador de workspace (perfil público/privado).
+ */
+
+const prisma = require('../lib/prisma');
+const { AppError } = require('../middleware/errorHandler');
+const { asyncHandler } = require('../lib/utils');
 
 // Obtener perfil público (visitantes) - Resuelve con tenantResolver
-exports.getPublicProfile = async (req, res) => {
+exports.getPublicProfile = asyncHandler(async (req, res) => {
   const workspaceId = req.tenantWorkspaceId;
+  if (!workspaceId) throw new AppError('Workspace no identificado', 400);
 
-  try {
-    const workspace = await prisma.workspace.findUnique({
-      where: { id: workspaceId },
-      select: {
-        id: true,
-        name: true,
-        handle: true,
-        bio: true,
-        avatar: true,
-        theme: true,
-        miniSite: true,
-        domainMappings: {
-          where: { canonical: true },
-          select: { hostname: true }
-        }
+  const workspace = await prisma.workspace.findUnique({
+    where: { id: workspaceId },
+    select: {
+      id: true,
+      name: true,
+      handle: true,
+      bio: true,
+      avatar: true,
+      theme: true,
+      miniSite: true,
+      domainMappings: {
+        where: { canonical: true },
+        select: { hostname: true }
       }
-    });
-
-    if (!workspace) return res.status(404).json({ error: 'Espacio no encontrado' });
-
-    if (workspace.miniSite && typeof workspace.miniSite === 'string') {
-      try { workspace.miniSite = JSON.parse(workspace.miniSite); } catch(e){}
     }
+  });
 
-    res.json(workspace);
-  } catch (error) {
-    console.error('Error public profile:', error);
-    res.status(500).json({ error: 'Error obteniendo perfil público' });
-  }
-};
+  if (!workspace) throw new AppError('Espacio no encontrado', 404);
+  res.json(parseMiniSite(workspace));
+});
 
-// Obtener perfil privado (dueño en dashboard) - Resuelve con authMiddleware
-exports.getPrivateProfile = async (req, res) => {
-  const workspaceId = req.user.workspaceId;
+// Obtener perfil privado (dueño en dashboard)
+exports.getPrivateProfile = asyncHandler(async (req, res) => {
+  const workspaceId = req.user?.workspaceId;
+  if (!workspaceId) throw new AppError('No autenticado', 401);
 
-  try {
-    const workspace = await prisma.workspace.findUnique({
-      where: { id: workspaceId },
-      include: {
-        domainMappings: {
-          where: { canonical: true },
-          select: { hostname: true }
-        }
+  const workspace = await prisma.workspace.findUnique({
+    where: { id: workspaceId },
+    include: {
+      domainMappings: {
+        where: { canonical: true },
+        select: { hostname: true }
       }
-    });
-
-    if (!workspace) return res.status(404).json({ error: 'Espacio no encontrado' });
-    
-    if (workspace.miniSite && typeof workspace.miniSite === 'string') {
-      try { workspace.miniSite = JSON.parse(workspace.miniSite); } catch(e){}
     }
-    
-    res.json(workspace);
-  } catch (error) {
-    res.status(500).json({ error: 'Error obteniendo tu perfil' });
-  }
-};
+  });
+
+  if (!workspace) throw new AppError('Espacio no encontrado', 404);
+  res.json(parseMiniSite(workspace));
+});
 
 // Actualizar perfil (dueño en dashboard)
-exports.updateProfile = async (req, res) => {
-  const workspaceId = req.user.workspaceId;
+exports.updateProfile = asyncHandler(async (req, res) => {
+  const workspaceId = req.user?.workspaceId;
+  if (!workspaceId) throw new AppError('No autenticado', 401);
+
   const { name, handle, bio, avatar, theme, miniSite } = req.body;
 
-  try {
-    const workspace = await prisma.workspace.update({
-      where: { id: workspaceId },
-      data: {
-        name,
-        handle,
-        bio,
-        avatar,
-        theme,
-        miniSite: typeof miniSite === 'object' ? JSON.stringify(miniSite) : miniSite
-      }
-    });
+  const workspace = await prisma.workspace.update({
+    where: { id: workspaceId },
+    data: {
+      name,
+      handle,
+      bio,
+      avatar,
+      theme,
+      miniSite: typeof miniSite === 'object' ? JSON.stringify(miniSite) : miniSite
+    }
+  });
 
-    res.json({ message: 'Perfil actualizado', workspace });
-  } catch (error) {
-    console.error('Error update profile:', error);
-    res.status(500).json({ error: 'Error actualizando tu perfil' });
-  }
-};
+  res.json({ message: 'Perfil actualizado', workspace: parseMiniSite(workspace) });
+});

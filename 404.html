@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>404 Página no encontrada · EnlaceHub</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="stylesheet" href="assets/styles.css">
+  <style>
+    .error-page {
+      display: flex; align-items: center; justify-content: center;
+      min-height: 80vh; margin-top: 20px; padding: 0 16px;
+    }
+    .error-card {
+      max-width: 520px; width: 100%; text-align: center;
+      background: var(--surface); border: 1px solid var(--border);
+      box-shadow: inset 0 0 0 1px var(--surface-border), var(--shadow);
+      backdrop-filter: blur(32px); -webkit-backdrop-filter: blur(32px);
+      border-radius: var(--radius-lg); padding: 64px 40px;
+      animation: fadeInUp 0.6s var(--elastic) forwards;
+    }
+    .error-code {
+      font-size: 6rem; font-weight: 900; line-height: 1;
+      margin: 0 0 8px; letter-spacing: -0.06em;
+    }
+    .error-icon { font-size: 3rem; display: block; margin-bottom: 16px; }
+    .error-title {
+      font-size: 1.6rem; font-weight: 800; margin: 0 0 12px;
+    }
+    .error-desc {
+      color: var(--muted); font-size: 1.05rem; line-height: 1.6;
+      margin: 0 0 36px;
+    }
+    .error-actions {
+      display: flex; gap: 12px; justify-content: center;
+      flex-wrap: wrap;
+    }
+    .error-actions .button { min-width: 140px; }
+  </style>
+</head>
+<body data-theme="dark">
+  <div class="shell">
+    <header class="topbar">
+      <a class="brand" href="index.html">EnlaceHub</a>
+      <nav class="nav" aria-label="Principal">
+        <a href="index.html">Inicio</a>
+        <a href="dashboard.html">Mi Panel</a>
+        <a href="registro.html" class="button primary">Comenzar Gratis</a>
+      </nav>
+    </header>
+
+    <main class="error-page">
+      <div class="error-card">
+        <span class="error-icon">🔍</span>
+        <div class="error-code holographic-text">404</div>
+        <h1 class="error-title">Página no encontrada</h1>
+        <p class="error-desc">
+          La página que buscas no existe o ha sido movida.
+          Revisa la URL o vuelve al inicio para encontrar lo que necesitas.
+        </p>
+        <div class="error-actions">
+          <a href="index.html" class="button primary">Volver al Inicio</a>
+          <a href="dashboard.html" class="button">Ir al Panel</a>
+        </div>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

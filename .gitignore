@@ -1,10 +1,10 @@
 node_modules/
-server/node_modules/
 .env
+.env.production
 *.log
-.opencode/agent/patches/
-.opencode/agent/logs/
-.opencode/agent/reports/
+*.db
+server/prisma/dev.db
+.opencode/agent/
 .DS_Store
 Thumbs.db
 Nueva carpeta/

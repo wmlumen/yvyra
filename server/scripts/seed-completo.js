@@ -7,10 +7,8 @@
  *       node scripts/seed-completo.js <email> <password> <nombre> <subdominio>
  */
 
-const { PrismaClient } = require('@prisma/client');
+const prisma = require('../lib/prisma');
 const bcrypt = require('bcryptjs');
-
-const prisma = new PrismaClient();
 
 async function main() {
   const email = process.argv[2] || 'demo@enlacehub.com';

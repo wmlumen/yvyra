@@ -65,13 +65,12 @@ try {
   state.miniSite = profileData.miniSite || {};
   state.profileExperience = normalizeProfileExperience(state.miniSite.profileExperience);
 
-  renderHeaderIdentity();
-
   const welcomeBanner = $('#welcome-banner');
   const welcomeName = $('#welcome-name');
   if (welcomeBanner && welcomeName && state.profile.name) {
     welcomeName.textContent = state.profile.name;
-    const hasCustomLinks = state.links.length > 1;
+    // Mostrar bienvenida si aún no ha añadido enlaces propios (> 2 porque por defecto se crean 2)
+    const hasCustomLinks = state.links.length > 2;
     const hasCustomBio = state.profile.bio && !state.profile.bio.includes('Bienvenido');
     if (!hasCustomLinks && !hasCustomBio) {
       welcomeBanner.style.display = 'block';
@@ -80,6 +79,9 @@ try {
 } catch (error) {
   console.error('Error cargando dashboard:', error);
 }
+
+// Renderizar identidad del usuario incluso si falló la carga del perfil (no deja el badge en "Mi cuenta")
+renderHeaderIdentity();
 
 hydrateProfile();
 hydrateProfileDesigner();

@@ -1,6 +1,4 @@
-const { PrismaClient } = require('@prisma/client');
-const prisma = new PrismaClient();
-
+const prisma = require('../lib/prisma');
 // Normalizar número de WhatsApp: solo dígitos, máx 18
 function normalizeWhatsAppNumber(value) {
   return String(value ?? '').replace(/\D+/g, '').slice(0, 18);

@@ -6,9 +6,8 @@
  * Uso: node scripts/seed-populate.js <email>
  * Ej:  node scripts/seed-populate.js wmlumen@gmail.com
  */
-const { PrismaClient } = require('@prisma/client');
+const prisma = require('../lib/prisma');
 const bcrypt = require('bcryptjs');
-const prisma = new PrismaClient();
 
 async function main() {
   const email = process.argv[2];

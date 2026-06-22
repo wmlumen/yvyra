@@ -1,6 +1,4 @@
-const { PrismaClient } = require('@prisma/client');
-const prisma = new PrismaClient();
-
+const prisma = require('../lib/prisma');
 // Registrar un evento de analytics (público, con rate limiting básico)
 exports.recordEvent = async (req, res) => {
   const workspaceId = req.tenantWorkspaceId || req.body.workspaceId;

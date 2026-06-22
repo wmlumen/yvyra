@@ -611,6 +611,48 @@ footer { padding: 40px 0 80px; color: var(--muted); text-align: center; font-siz
   box-shadow: var(--glow); transform: scale(1.1);
 }
 
+/* =========================================
+   SUPER ADMIN: TABS
+   ========================================= */
+.tab {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 10px 20px; border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+  border: 1px solid transparent; cursor: pointer;
+  font-weight: 600; font-size: 0.95rem;
+  color: var(--muted); background: transparent;
+  transition: all 0.2s var(--smooth);
+  font-family: inherit;
+}
+.tab:hover { color: var(--text); background: color-mix(in srgb, var(--border) 30%, transparent); }
+.tab.active {
+  color: var(--accent); border-color: var(--border);
+  border-bottom-color: var(--surface);
+  background: var(--surface);
+}
+
+.tab-panel { padding: 8px 0; }
+
+/* =========================================
+   SUPER ADMIN: SEARCH BAR
+   ========================================= */
+.search-bar input {
+  width: 100%; padding: 10px 16px; border-radius: var(--radius-sm);
+  border: 1px solid var(--border); background: var(--surface);
+  color: var(--text); font-size: 0.95rem; font-family: inherit;
+  outline: none; transition: border-color 0.2s var(--smooth);
+}
+.search-bar input:focus { border-color: var(--accent); box-shadow: var(--glow); }
+
+/* =========================================
+   SUPER ADMIN: PAGINATION
+   ========================================= */
+.pagination button:disabled {
+  opacity: 0.4; cursor: not-allowed;
+}
+.pagination span {
+  font-size: 0.85rem; color: var(--muted); font-weight: 500;
+}
+
 @keyframes popIn {
   0% { transform: scale(0.8); opacity: 0; }
   70% { transform: scale(1.1); opacity: 1; }
