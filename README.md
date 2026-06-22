@@ -9,7 +9,6 @@ EnlaceHub es una **Plataforma Full-Stack (SaaS)** para crear un ecosistema digit
 - **Base de Datos**: SQLite (desarrollo) / PostgreSQL (producción).
 - **ORM**: Prisma.
 - **Seguridad**: JWT en cookies `HttpOnly`, CORS, rate limiting, validación de entrada.
-- **Sistema de Agentes**: `.opencode/agent/` con Planificador, Orquestador, Ejecutor y Calidad.
 
 ## Características Principales
 
@@ -97,33 +96,6 @@ npm run dev:all  # Inicia frontend y backend simultáneamente
 | GET | `/api/classifieds/search` | Buscador global de clasificados |
 | GET | `/api/admin/stats` | Estadísticas de administración |
 | GET | `/api/health` | Health check del servidor |
-| GET | `/api/agent/health` | Health check del sistema de agentes |
-
-## Sistema de Agentes
-
-El proyecto incluye un sistema de agentes en `.opencode/agent/`:
-
-- **Planificador**: Analiza requisitos y genera planes de implementación.
-- **Orquestador**: Coordina el flujo automático (`/auto`, `/status`, `/rollback`).
-- **Ejecutor**: Implementa cambios siguiendo el plan con prechecks y snapshots.
-- **Calidad**: Audita código, pruebas, seguridad y documentación con scoring.
-
-Ver `.opencode/agent/Orquestador-agent.md` para la documentación del comando `/auto`.
-
-## Trabajo paralelo entre IAs
-
-Para coordinación entre dos IAs sin solaparse, usar obligatoriamente:
-
-- [docs/AI_PARALLEL_WORKFLOW.md](/C:/Users/HP%20250%20G10/Documents/GITHUT/Arbol-Clasificado/docs/AI_PARALLEL_WORKFLOW.md)
-
-Ese documento define:
-
-- separación exacta entre `IA A` y `IA B`;
-- reglas de toma de tareas;
-- ayuda cruzada empezando desde abajo de la lista;
-- prohibición de tocar tareas ya tomadas por la otra IA;
-- revisión final con reparación inmediata si algo no responde como se esperaba.
-
 ## Pruebas
 
 ```bash
@@ -146,7 +118,3 @@ npm run test:server  # Tests del backend
 - Cookies HttpOnly y SameSite.
 - Auditoría de acciones críticas.
 - Sin secretos en el código.
-
----
-
-*Desarrollado según `PROMPT_MAESTRO.md`.*

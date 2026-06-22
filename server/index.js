@@ -34,31 +34,6 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', message: 'EnlaceHub API funcionando', uptime: process.uptime() });
 });
 
-// Health check del sistema de agentes
-app.get('/api/agent/health', async (req, res) => {
-  const checks = {
-    database: false,
-    server: true,
-    timestamp: new Date().toISOString()
-  };
-  try {
-    const { PrismaClient } = require('@prisma/client');
-    const prisma = new PrismaClient();
-    await prisma.$queryRaw`SELECT 1`;
-    checks.database = true;
-    await prisma.$disconnect();
-  } catch (e) {
-    checks.database = false;
-    checks.databaseError = e.message;
-  }
-  const healthy = checks.database && checks.server;
-  res.status(healthy ? 200 : 503).json({
-    status: healthy ? 'healthy' : 'degraded',
-    checks,
-    version: '1.1.0'
-  });
-});
-
 // Rutas Globales
 app.use('/api/auth', authRoutes);
 app.use('/api/admin', adminRoutes);
