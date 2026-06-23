@@ -1,4 +1,7 @@
 import {
+  BIG_CLASSIFIED_THEMES,
+  buildMapDirectionsUrl,
+  buildMapEmbedUrl,
   CLASSIFIED_CATEGORIES,
   CLASSIFIED_KINDS,
   parseTrafficAttribution,
@@ -63,6 +66,7 @@ async function fetchAndRender() {
     const items = sortClientSide(await searchClassifieds(params), sort);
     renderSummary(items, { query, category, kind });
     renderCategoryChips(items, category);
+    renderBigThemeSections(items);
     renderItems(items);
   } catch (error) {
     console.error('Error fetching classifieds:', error);
@@ -143,6 +147,43 @@ function syncTenantLinks() {
   }
 }
 
+function renderBigThemeSections(items) {
+  const section = document.querySelector('#big-theme-sections');
+  const grid = document.querySelector('#big-theme-grid');
+  const grouped = BIG_CLASSIFIED_THEMES
+    .map((theme) => ({
+      ...theme,
+      items: items.filter((item) => isPromotedThemeProduct(item) && item.bigTheme === theme.value).slice(0, 4)
+    }))
+    .filter((theme) => theme.items.length);
+
+  if (!grouped.length) {
+    section.hidden = true;
+    grid.replaceChildren();
+    return;
+  }
+
+  section.hidden = false;
+  grid.replaceChildren(...grouped.map((theme) => {
+    const article = document.createElement('article');
+    article.className = 'theme-market-card';
+
+    const eyebrow = document.createElement('p');
+    eyebrow.className = 'eyebrow';
+    eyebrow.textContent = theme.label;
+
+    const title = document.createElement('h3');
+    title.textContent = `${theme.items.length} producto${theme.items.length === 1 ? '' : 's'} promocionado${theme.items.length === 1 ? '' : 's'}`;
+
+    const list = document.createElement('div');
+    list.className = 'theme-market-list';
+    list.replaceChildren(...theme.items.map(createThemeProductCard));
+
+    article.append(eyebrow, title, list);
+    return article;
+  }));
+}
+
 function renderItems(items) {
   const countEl = document.querySelector('#classified-count');
   countEl.textContent = `${items.length} ${items.length === 1 ? 'anuncio disponible' : 'anuncios disponibles'}`;
@@ -218,6 +259,10 @@ function createCard(item) {
 
   body.append(meta, title, description, facts, dateEl);
 
+  if (shouldShowProductMap(item)) {
+    body.append(createProductMapBlock(item));
+  }
+
   // ── Contact button ──
   const contact = document.createElement('a');
   contact.className = `button primary${item.contactUrl ? '' : ' disabled-btn'}`;
@@ -282,6 +327,62 @@ function createCard(item) {
   return article;
 }
 
+function createThemeProductCard(item) {
+  const article = document.createElement('article');
+  article.className = 'theme-product-card';
+
+  const title = document.createElement('h4');
+  title.textContent = item.title;
+
+  const meta = document.createElement('p');
+  meta.className = 'muted';
+  meta.textContent = `${item.category} · ${formatPriceText(item)}`;
+
+  const action = document.createElement('a');
+  action.className = 'button';
+  action.href = item.contactUrl || '#';
+  action.textContent = item.contactUrl ? 'Ver producto' : 'Consultar';
+  if (item.contactUrl) {
+    action.target = '_blank';
+    action.rel = 'noopener noreferrer nofollow';
+  } else {
+    action.setAttribute('aria-disabled', 'true');
+  }
+
+  article.append(title, meta, action);
+  return article;
+}
+
+function createProductMapBlock(item) {
+  const wrap = document.createElement('div');
+  wrap.className = 'classified-map-block';
+
+  const label = document.createElement('p');
+  label.className = 'classified-map-label';
+  label.textContent = `Punto de venta: ${item.location}`;
+
+  const frameWrap = document.createElement('div');
+  frameWrap.className = 'classified-map';
+
+  const frame = document.createElement('iframe');
+  frame.src = buildMapEmbedUrl(item.location);
+  frame.title = `Mapa de ${item.title}`;
+  frame.loading = 'lazy';
+  frame.referrerPolicy = 'no-referrer-when-downgrade';
+  frame.setAttribute('allowfullscreen', '');
+  frameWrap.append(frame);
+
+  const action = document.createElement('a');
+  action.className = 'button';
+  action.href = buildMapDirectionsUrl(item.location);
+  action.target = '_blank';
+  action.rel = 'noopener noreferrer';
+  action.textContent = 'Ver ubicación';
+
+  wrap.append(label, frameWrap, action);
+  return wrap;
+}
+
 function badge(text, type) {
   const element = document.createElement('span');
   element.className = `badge${type ? ' badge-' + type : ''}`;
@@ -301,6 +402,21 @@ function formatPrice(item) {
   }
 }
 
+function formatPriceText(item) {
+  return String(formatPrice(item)).replace(/<[^>]+>/g, '');
+}
+
 function resolveKindLabel(kind) {
   return CLASSIFIED_KINDS.find((entry) => entry.value === kind)?.label || 'Clasificado tradicional';
+}
+
+function isPromotedThemeProduct(item) {
+  return item.kind === 'product' && item.featured && item.showInBigTheme && item.bigTheme;
+}
+
+function shouldShowProductMap(item) {
+  return item.kind === 'product'
+    && item.featured
+    && Boolean(String(item.location || '').trim())
+    && !/remoto/i.test(String(item.location || ''));
 }

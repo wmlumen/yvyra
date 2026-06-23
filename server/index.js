@@ -16,6 +16,8 @@ const whatsappRoutes = require('./routes/whatsapp');
 const auditRoutes = require('./routes/audit');
 const miniSiteRoutes = require('./routes/miniSite');
 const agentRoutes = require('./routes/agent');
+const seoRoutes = require('./routes/seo');
+const canonicalRedirect = require('./middleware/canonicalRedirect');
 
 const fs = require('fs');
 const path = require('path');
@@ -27,6 +29,8 @@ const PORT = process.env.PORT || 3000;
 const SSL_ENABLED = process.env.SSL_ENABLED === 'true';
 const isProduction = process.env.NODE_ENV === 'production';
 
+app.set('trust proxy', 1);
+
 // Seguridad
 app.use(helmet({
   contentSecurityPolicy: false, // Deshabilitado para permitir las demos frontend; habilitar en producción
@@ -36,6 +40,8 @@ app.use(helmet({
 app.use(cors({ origin: true, credentials: true }));
 app.use(express.json({ limit: '1mb' }));
 app.use(cookieParser());
+app.use(canonicalRedirect);
+app.use(seoRoutes);
 
 // En producción, servir archivos estáticos del frontend desde la raíz del proyecto
 if (isProduction) {

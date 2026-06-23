@@ -26,6 +26,14 @@ export const CLASSIFIED_KINDS = [
   { value: 'service', label: 'Servicio' }
 ];
 
+export const BIG_CLASSIFIED_THEMES = [
+  { value: 'tech-business', label: 'Tecnologia y negocio' },
+  { value: 'home-living', label: 'Casa y vida practica' },
+  { value: 'mobility-field', label: 'Movilidad y trabajo en ruta' },
+  { value: 'style-wellbeing', label: 'Estilo y bienestar' },
+  { value: 'family-leisure', label: 'Familia y tiempo libre' }
+];
+
 export const DEFAULT_MINI_SITE = {
   published: true,
   businessName: 'Orlando Velez',
@@ -37,7 +45,8 @@ export const DEFAULT_MINI_SITE = {
   address: 'Atención remota',
   primaryCtaLabel: 'Ver mi árbol de enlaces',
   primaryCtaUrl: 'index.html',
-  showClassifieds: true
+  showClassifieds: true,
+  showMap: true
 };
 
 export const DEFAULT_STATE = {
@@ -389,6 +398,18 @@ export function buildWhatsAppShareUrl({ url = '', text = '', phone = '' } = {}) 
   return `${base}?text=${encodeURIComponent(message)}`;
 }
 
+export function buildMapEmbedUrl(address = '') {
+  const normalized = String(address ?? '').trim();
+  if (!normalized) return '';
+  return `https://www.google.com/maps?q=${encodeURIComponent(normalized)}&output=embed`;
+}
+
+export function buildMapDirectionsUrl(address = '') {
+  const normalized = String(address ?? '').trim();
+  if (!normalized) return '';
+  return `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(normalized)}`;
+}
+
 export function recordEvent(state, type, targetId = null, at = new Date(), metadata = {}) {
   if (!Array.isArray(state.events)) state.events = [];
   const attribution = {
@@ -506,6 +527,8 @@ export function generateStaticMiniSiteHTML({ profile = {}, miniSite = {}, classi
   const emailLink = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(site.email || '')
     ? `mailto:${encodeURIComponent(site.email)}`
     : '';
+  const mapEmbedUrl = site.showMap === false ? '' : buildMapEmbedUrl(site.address);
+  const mapDirectionsUrl = site.showMap === false ? '' : buildMapDirectionsUrl(site.address);
   const serviceHtml = services.map((service) => `<li>${escapeHtml(service)}</li>`).join('');
   const classifiedHtml = visibleClassifieds.map((item) => `
         <article class="ad">
@@ -516,7 +539,8 @@ export function generateStaticMiniSiteHTML({ profile = {}, miniSite = {}, classi
         </article>`).join('');
   const contactLinks = [
     whatsappUrl ? `<a href="${escapeHtml(whatsappUrl)}">WhatsApp</a>` : '',
-    emailLink ? `<a href="${escapeHtml(emailLink)}">Correo</a>` : ''
+    emailLink ? `<a href="${escapeHtml(emailLink)}">Correo</a>` : '',
+    mapDirectionsUrl ? `<a href="${escapeHtml(mapDirectionsUrl)}" target="_blank" rel="noopener noreferrer">Cómo llegar</a>` : ''
   ].filter(Boolean).join('');
 
   return `<!doctype html>
@@ -528,7 +552,7 @@ export function generateStaticMiniSiteHTML({ profile = {}, miniSite = {}, classi
   <title>${escapeHtml(site.businessName || profile.name || 'Mi sitio')}</title>
   <style>
     :root{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#172033;background:#f5f7fb;line-height:1.6}
-    *{box-sizing:border-box}body{margin:0}.wrap{width:min(100% - 32px,960px);margin:auto}.hero{padding:72px 0 42px}.eyebrow{font-weight:800;color:#5b5bd6}.hero h1{font-size:clamp(2.3rem,8vw,4.8rem);line-height:1.02;margin:.2em 0}.hero p{max-width:680px;color:#5f6878;font-size:1.08rem}.actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:24px}.button,.contacts a,.ad a{display:inline-flex;padding:12px 18px;border-radius:12px;text-decoration:none;font-weight:800;border:1px solid #dce1ea;color:#172033;background:#fff}.button.primary{background:#5b5bd6;color:#fff;border-color:#5b5bd6}.section{padding:32px 0}.panel{background:#fff;border:1px solid #dce1ea;border-radius:22px;padding:24px;box-shadow:0 16px 50px rgba(30,41,59,.08)}.services{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;padding:0;list-style:none}.services li,.ad{border:1px solid #e2e6ed;border-radius:16px;padding:18px;background:#fff}.ads{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}.ad span{font-size:.78rem;font-weight:800;color:#5b5bd6}.ad h3{margin:.5rem 0}.ad p{color:#667085}.contacts{display:flex;gap:10px;flex-wrap:wrap}footer{padding:36px 0;color:#667085}@media(max-width:600px){.hero{padding-top:44px}}
+    *{box-sizing:border-box}body{margin:0}.wrap{width:min(100% - 32px,960px);margin:auto}.hero{padding:72px 0 42px}.eyebrow{font-weight:800;color:#5b5bd6}.hero h1{font-size:clamp(2.3rem,8vw,4.8rem);line-height:1.02;margin:.2em 0}.hero p{max-width:680px;color:#5f6878;font-size:1.08rem}.actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:24px}.button,.contacts a,.ad a{display:inline-flex;padding:12px 18px;border-radius:12px;text-decoration:none;font-weight:800;border:1px solid #dce1ea;color:#172033;background:#fff}.button.primary{background:#5b5bd6;color:#fff;border-color:#5b5bd6}.section{padding:32px 0}.panel{background:#fff;border:1px solid #dce1ea;border-radius:22px;padding:24px;box-shadow:0 16px 50px rgba(30,41,59,.08)}.services{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;padding:0;list-style:none}.services li,.ad{border:1px solid #e2e6ed;border-radius:16px;padding:18px;background:#fff}.ads{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}.ad span{font-size:.78rem;font-weight:800;color:#5b5bd6}.ad h3{margin:.5rem 0}.ad p{color:#667085}.contacts{display:flex;gap:10px;flex-wrap:wrap}.map{margin-top:18px;border-radius:18px;overflow:hidden;border:1px solid #dce1ea;min-height:320px}.map iframe{width:100%;height:320px;border:0;display:block}footer{padding:36px 0;color:#667085}@media(max-width:600px){.hero{padding-top:44px}.map,.map iframe{min-height:260px;height:260px}}
   </style>
 </head>
 <body>
@@ -545,7 +569,7 @@ export function generateStaticMiniSiteHTML({ profile = {}, miniSite = {}, classi
     </section>
     ${services.length ? `<section class="section wrap"><div class="panel"><h2>Servicios</h2><ul class="services">${serviceHtml}</ul></div></section>` : ''}
     ${visibleClassifieds.length ? `<section class="section wrap"><h2>Clasificados destacados</h2><div class="ads">${classifiedHtml}</div></section>` : ''}
-    <section class="section wrap"><div class="panel"><h2>Contacto</h2><p>${escapeHtml(site.address)}</p><div class="contacts">${contactLinks || '<span>Agrega tus datos de contacto.</span>'}</div></div></section>
+    <section class="section wrap"><div class="panel"><h2>Contacto</h2><p>${escapeHtml(site.address)}</p><div class="contacts">${contactLinks || '<span>Agrega tus datos de contacto.</span>'}</div>${mapEmbedUrl ? `<div class="map"><iframe src="${escapeHtml(mapEmbedUrl)}" title="Ubicación del local" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe></div>` : ''}</div></section>
   </main>
   <footer class="wrap">Sitio HTML básico generado desde el árbol de enlaces.</footer>
 </body>

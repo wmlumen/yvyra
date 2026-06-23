@@ -27,6 +27,7 @@ export interface MiniSite {
   primaryCtaLabel: string;
   primaryCtaUrl: string;
   showClassifieds: boolean;
+  showMap: boolean;
 }
 
 export interface Link {
@@ -42,6 +43,9 @@ export interface Classified {
   id: string;
   kind: string;
   kindLabel: string;
+  bigTheme?: string;
+  bigThemeLabel?: string;
+  showInBigTheme?: boolean;
   title: string;
   description: string;
   category: string;

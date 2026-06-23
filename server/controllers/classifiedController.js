@@ -1,5 +1,13 @@
 const prisma = require('../lib/prisma');
 const { getKindLabel, normalizeKind } = require('../lib/classifiedKinds');
+
+const BIG_THEME_LABELS = {
+  'tech-business': 'Tecnologia y negocio',
+  'home-living': 'Casa y vida practica',
+  'mobility-field': 'Movilidad y trabajo en ruta',
+  'style-wellbeing': 'Estilo y bienestar',
+  'family-leisure': 'Familia y tiempo libre'
+};
 // Buscador Global de Clasificados
 exports.searchClassifieds = async (req, res) => {
   try {
@@ -96,6 +104,9 @@ exports.searchClassifieds = async (req, res) => {
         })(),
         imageUrl: payload.imageUrl || '',
         contactUrl: payload.contactUrl || '',
+        showInBigTheme: Boolean(payload.showInBigTheme),
+        bigTheme: payload.bigTheme || '',
+        bigThemeLabel: BIG_THEME_LABELS[payload.bigTheme] || '',
         workspace: item.block?.workspace || null
       };
     });

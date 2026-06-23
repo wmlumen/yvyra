@@ -4,6 +4,8 @@ import {
   aggregateAnalytics,
   buildTenantUrls,
   buildTrackedUrl,
+  buildMapDirectionsUrl,
+  buildMapEmbedUrl,
   buildWhatsAppShareUrl,
   createClassified,
   createShortLink,
@@ -201,6 +203,14 @@ test('buildWhatsAppShareUrl genera URL wa.me', () => {
   assert.match(result, /example\.com/);
 });
 
+test('buildMap URLs genera embed y ruta', () => {
+  const embed = buildMapEmbedUrl('Av. Siempre Viva 742, Asuncion');
+  const directions = buildMapDirectionsUrl('Av. Siempre Viva 742, Asuncion');
+  assert.match(embed, /^https:\/\/www\.google\.com\/maps\?q=/);
+  assert.match(embed, /output=embed/);
+  assert.match(directions, /^https:\/\/www\.google\.com\/maps\/dir\/\?api=1&destination=/);
+});
+
 // ========== Classifieds ==========
 
 test('validateClassified valida campos requeridos', () => {
@@ -261,13 +271,24 @@ test('escapeHtml escapa caracteres peligrosos', () => {
 test('generateStaticMiniSiteHTML genera HTML válido', () => {
   const html = generateStaticMiniSiteHTML({
     profile: { name: 'Test', handle: '@test' },
-    miniSite: { businessName: 'Test Business', headline: 'Headline', description: 'Desc', published: true, services: ['S1', 'S2'], primaryCtaLabel: 'CTA', primaryCtaUrl: 'https://example.com' }
+    miniSite: { businessName: 'Test Business', headline: 'Headline', description: 'Desc', published: true, services: ['S1', 'S2'], address: 'Av. Siempre Viva 742', primaryCtaLabel: 'CTA', primaryCtaUrl: 'https://example.com' }
   });
   assert.match(html, /<html lang="es">/);
   assert.match(html, /Test Business/);
   assert.match(html, /Headline/);
   assert.match(html, /S1.*S2/);
   assert.match(html, /CTA/);
+  assert.match(html, /Cómo llegar/);
+  assert.match(html, /<iframe/);
+});
+
+test('generateStaticMiniSiteHTML omite mapa si showMap es false', () => {
+  const html = generateStaticMiniSiteHTML({
+    profile: { name: 'Test', handle: '@test' },
+    miniSite: { businessName: 'Test Business', headline: 'Headline', description: 'Desc', published: true, address: 'Av. Siempre Viva 742', showMap: false, primaryCtaLabel: 'CTA', primaryCtaUrl: 'https://example.com' }
+  });
+  assert.doesNotMatch(html, /Cómo llegar/);
+  assert.doesNotMatch(html, /<iframe/);
 });
 
 // ========== State Management ==========

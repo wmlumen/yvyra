@@ -38,6 +38,10 @@
         <div class="form-row"><label for="ad-expires">Caduca, opcional</label><input id="ad-expires" type="datetime-local"></div>
         <label class="inline"><input id="ad-active" type="checkbox" checked> Anuncio activo</label>
         <label class="inline"><input id="ad-featured" type="checkbox"> Anuncio destacado</label>
+        <div id="ad-big-theme-controls" hidden>
+          <label class="inline"><input id="ad-show-in-big-theme" type="checkbox"> Mostrar este producto en Temas Grandes</label>
+          <div class="form-row"><label for="ad-big-theme">Tema grande</label><select id="ad-big-theme"><option value="">Selecciona un tema</option></select></div>
+        </div>
         <div class="actions">
           <button class="button primary" type="submit">Guardar anuncio</button>
           <button class="button" id="ad-cancel-edit" type="button" hidden>Cancelar edición</button>

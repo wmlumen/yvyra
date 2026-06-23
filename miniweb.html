@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="es">
 <head>
-  <meta charset="utf-8"><link rel="icon" href="favicon.svg" type="image/svg+xml"><link rel="alternate icon" href="favicon.ico" type="image/x-icon">
+  <meta charset="utf-8"><link rel="icon" href="favicon.svg" type="image/svg+xml"><link rel="alternate icon" href="favicon.ico" type="image/x-icon"><link rel="apple-touch-icon" href="favicon.svg">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   
   <!-- SEO Básico -->
@@ -81,6 +81,15 @@
       <h2>Contacto</h2>
       <p id="mini-address" class="muted"></p>
       <div class="actions" id="mini-contact-links"></div>
+      <div class="mini-map" id="mini-map" hidden>
+        <iframe
+          id="mini-map-frame"
+          title="Ubicación del local"
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          allowfullscreen>
+        </iframe>
+      </div>
     </section>
   </main>
   <footer>Página web básica generada desde el árbol de enlaces</footer>

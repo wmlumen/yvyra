@@ -92,6 +92,7 @@ function hydrate() {
   $('#cta-label').value = site.primaryCtaLabel || 'Ver mi árbol de enlaces';
   $('#cta-url').value = site.primaryCtaUrl || 'index.html';
   $('#show-classifieds').checked = Boolean(site.showClassifieds);
+  $('#show-map').checked = site.showMap !== false;
   $('#site-published').checked = Boolean(site.published);
 }
 
@@ -117,7 +118,8 @@ function readForm() {
     heroImage: $('#site-hero-image').value.trim(),
     primaryCtaLabel: $('#cta-label').value.trim().slice(0, 80) || 'Ver mi árbol de enlaces',
     primaryCtaUrl: ctaUrl,
-    showClassifieds: $('#show-classifieds').checked
+    showClassifieds: $('#show-classifieds').checked,
+    showMap: $('#show-map').checked
   };
 }
 

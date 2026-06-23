@@ -1,4 +1,4 @@
-import { CLASSIFIED_CATEGORIES, CLASSIFIED_KINDS } from './core.mjs';
+import { BIG_CLASSIFIED_THEMES, CLASSIFIED_CATEGORIES, CLASSIFIED_KINDS } from './core.mjs';
 import { checkSession } from './auth.mjs';
 import { getPrivateBlocks, createBlock, updateBlock, deleteBlock } from './api.mjs';
 
@@ -40,6 +40,16 @@ for (const kind of CLASSIFIED_KINDS) {
   $('#ad-kind').append(option);
 }
 
+for (const theme of BIG_CLASSIFIED_THEMES) {
+  const option = document.createElement('option');
+  option.value = theme.value;
+  option.textContent = theme.label;
+  $('#ad-big-theme').append(option);
+}
+
+$('#ad-kind').addEventListener('change', syncBigThemeControls);
+$('#ad-featured').addEventListener('change', syncBigThemeControls);
+
 $('#classified-form').addEventListener('submit', async (event) => {
   event.preventDefault();
   const submitBtn = event.target.querySelector('button[type="submit"]');
@@ -63,7 +73,13 @@ $('#classified-form').addEventListener('submit', async (event) => {
          location: input.location,
          isFeatured: input.featured
       },
-      payload: { contactUrl: input.contactUrl, imageUrl: input.imageUrl, expiresAt: input.expiresAt }
+      payload: {
+        contactUrl: input.contactUrl,
+        imageUrl: input.imageUrl,
+        expiresAt: input.expiresAt,
+        showInBigTheme: input.showInBigTheme,
+        bigTheme: input.bigTheme
+      }
     };
 
     if (id) {
@@ -88,8 +104,13 @@ $('#ad-cancel-edit').addEventListener('click', resetForm);
 render();
 
 function readForm() {
+  const kind = $('#ad-kind').value;
+  const featured = $('#ad-featured').checked;
+  const canUseBigTheme = kind === 'product' && featured;
+  const showInBigTheme = canUseBigTheme && $('#ad-show-in-big-theme').checked;
+
   return {
-    kind: $('#ad-kind').value,
+    kind,
     title: $('#ad-title').value,
     description: $('#ad-description').value,
     category: $('#ad-category').value,
@@ -100,7 +121,9 @@ function readForm() {
     imageUrl: $('#ad-image').value,
     expiresAt: $('#ad-expires').value,
     active: $('#ad-active').checked,
-    featured: $('#ad-featured').checked
+    featured,
+    showInBigTheme,
+    bigTheme: showInBigTheme ? $('#ad-big-theme').value : ''
   };
 }
 
@@ -127,7 +150,8 @@ function render() {
     const details = document.createElement('div');
     details.className = 'item-url';
     const kindLabel = CLASSIFIED_KINDS.find((entry) => entry.value === item.kind)?.label || 'Clasificado tradicional';
-    details.textContent = `${kindLabel} · ${item.category} · ${item.location || 'Sin ubicación'} · ${item.price ?? 'Consultar'} ${item.currency || ''}`;
+    const themeLabel = BIG_CLASSIFIED_THEMES.find((entry) => entry.value === item.bigTheme)?.label;
+    details.textContent = `${kindLabel} · ${item.category} · ${item.location || 'Sin ubicación'} · ${item.price ?? 'Consultar'} ${item.currency || ''}${themeLabel && item.showInBigTheme ? ` · Tema: ${themeLabel}` : ''}`;
 
     const actions = document.createElement('div');
     actions.className = 'actions';
@@ -164,6 +188,9 @@ function edit(item) {
   $('#ad-expires').value = item.expiresAt || '';
   $('#ad-active').checked = Boolean(item.active);
   $('#ad-featured').checked = Boolean(item.featured);
+  $('#ad-show-in-big-theme').checked = Boolean(item.showInBigTheme);
+  $('#ad-big-theme').value = item.bigTheme || '';
+  syncBigThemeControls();
   $('#ad-cancel-edit').hidden = false;
   $('#ad-title').focus();
 }
@@ -176,7 +203,13 @@ async function toggle(id) {
       type: item.kind || 'classified',
       title: item.title,
       isActive: !item.active,
-      payload: { contactUrl: item.contactUrl, imageUrl: item.imageUrl, expiresAt: item.expiresAt }
+      payload: {
+        contactUrl: item.contactUrl,
+        imageUrl: item.imageUrl,
+        expiresAt: item.expiresAt,
+        showInBigTheme: item.showInBigTheme,
+        bigTheme: item.bigTheme || ''
+      }
     });
     await loadData();
     render();
@@ -203,6 +236,9 @@ function resetForm() {
   $('#classified-editing-id').value = '';
   $('#ad-kind').value = 'classified';
   $('#ad-active').checked = true;
+  $('#ad-show-in-big-theme').checked = false;
+  $('#ad-big-theme').value = '';
+  syncBigThemeControls();
   $('#ad-cancel-edit').hidden = true;
 }
 
@@ -212,3 +248,22 @@ function flash(message, type = 'success') {
   element.className = `notice ${type}`;
   element.hidden = false;
 }
+
+function syncBigThemeControls() {
+  const canUseThemes = $('#ad-kind').value === 'product' && $('#ad-featured').checked;
+  $('#ad-big-theme-controls').hidden = !canUseThemes;
+  if (!canUseThemes) {
+    $('#ad-show-in-big-theme').checked = false;
+    $('#ad-big-theme').value = '';
+    $('#ad-big-theme').disabled = true;
+    return;
+  }
+  $('#ad-big-theme').disabled = !$('#ad-show-in-big-theme').checked;
+}
+
+$('#ad-show-in-big-theme').addEventListener('change', () => {
+  $('#ad-big-theme').disabled = !$('#ad-show-in-big-theme').checked;
+  if (!$('#ad-show-in-big-theme').checked) $('#ad-big-theme').value = '';
+});
+
+syncBigThemeControls();

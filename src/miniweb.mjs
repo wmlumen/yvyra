@@ -1,4 +1,6 @@
 import {
+  buildMapDirectionsUrl,
+  buildMapEmbedUrl,
   buildWhatsAppShareUrl,
   isClassifiedVisible,
   isValidHttpUrl,
@@ -42,6 +44,7 @@ function render() {
   $('#mini-headline').textContent = site.headline || '';
   $('#mini-description').textContent = site.description || '';
   $('#mini-address').textContent = site.address || '';
+  renderMap();
 
   const primaryCta = $('#mini-primary-cta');
   primaryCta.textContent = site.primaryCtaLabel || 'Ver árbol';
@@ -121,6 +124,22 @@ function renderClassifieds() {
     article.append(body);
     return article;
   }));
+}
+
+function renderMap() {
+  const address = String(site.address || '').trim();
+  const mapWrap = $('#mini-map');
+  const mapFrame = $('#mini-map-frame');
+
+  if (!address || site.showMap === false) {
+    mapWrap.hidden = true;
+    mapFrame.removeAttribute('src');
+    return;
+  }
+
+  mapFrame.src = buildMapEmbedUrl(address);
+  mapWrap.hidden = false;
+  addContactLink('Cómo llegar', buildMapDirectionsUrl(address));
 }
 
 function addContactLink(label, href) {
