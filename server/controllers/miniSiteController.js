@@ -186,6 +186,17 @@ exports.downloadMiniSite = async (req, res) => {
   }
 };
 
+// Map de handles → imágenes de fondo Unsplash
+const HERO_BACKGROUNDS = {
+  'milibeats': 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=960&h=540&fit=crop&crop=center',
+  'cafe-aroma': 'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=960&h=540&fit=crop&crop=center',
+  'cafearoma': 'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=960&h=540&fit=crop&crop=center',
+  'techfix': 'https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=960&h=540&fit=crop&crop=center',
+  'luna-arte': 'https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=960&h=540&fit=crop&crop=center',
+  'lunaarte': 'https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=960&h=540&fit=crop&crop=center',
+};
+const HERO_DEFAULT = 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=960&h=540&fit=crop&crop=center';
+
 // ========== Funciones auxiliares ==========
 
 function escapeHtml(value) {
@@ -254,6 +265,9 @@ function buildMiniSiteHTML(workspace, config) {
   const siteUrl = config.primaryCtaUrl || `${workspace.handle ? `https://${workspace.handle}.enlacehub.com` : ''}`;
   const avatarUrl = workspace.avatar ? `https://avatar.enlacehub.com/${workspace.avatar}` : '';
   const year = new Date().getFullYear();
+  
+  // Fondo hero según handle
+  const heroBgUrl = HERO_BACKGROUNDS[(workspace.handle || '').toLowerCase()] || HERO_DEFAULT;
 
   // JSON-LD Structured Data
   const jsonLd = {
@@ -311,10 +325,13 @@ function buildMiniSiteHTML(workspace, config) {
     *{box-sizing:border-box;margin:0;padding:0}
     body{margin:0;min-height:100vh;display:flex;flex-direction:column}
     .wrap{width:min(100% - 32px,960px);margin:0 auto}
-    .hero{padding:64px 0 32px;text-align:center}
-    .hero h1{font-size:clamp(2rem,6vw,3.5rem);line-height:1.1;margin:.2em 0}
-    .hero .handle{color:#5b5bd6;font-weight:600;font-size:.95rem}
-    .hero p{color:#5f6878;max-width:600px;margin:.5em auto}
+    .hero{position:relative;overflow:hidden;padding:80px 0 48px;text-align:center}
+    .hero-bg{position:absolute;inset:0;background-size:cover;background-position:center;z-index:0}
+    .hero-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,0.3),rgba(0,0,0,0.7));z-index:1}
+    .hero > *{position:relative;z-index:2}
+    .hero h1{font-size:clamp(2rem,6vw,3.5rem);line-height:1.1;margin:.2em 0;color:#fff}
+    .hero .handle{color:rgba(255,255,255,0.7);font-weight:600;font-size:.95rem}
+    .hero p{color:rgba(255,255,255,0.9);max-width:600px;margin:.5em auto}
     .cta-button,.contact-btn{display:inline-flex;align-items:center;padding:12px 24px;border-radius:12px;text-decoration:none;font-weight:700;transition:all .2s}
     .cta-button{background:#5b5bd6;color:#fff;font-size:1.1rem}
     .cta-button:hover{background:#4a4ac0;transform:translateY(-1px)}
@@ -337,12 +354,14 @@ function buildMiniSiteHTML(workspace, config) {
     .contact-btn{background:#fff;border:1px solid #dce1ea;color:#172033}
     .contact-btn:hover{background:#f5f7fb}
     footer{padding:32px 0;color:#667085;text-align:center;font-size:.9rem;margin-top:auto;border-top:1px solid #e2e6ed}
-    @media(max-width:600px){.hero{padding-top:40px}.hero h1{font-size:1.8rem}}
+    @media(max-width:600px){.hero{padding:60px 0 36px}.hero h1{font-size:1.8rem}}
   </style>
 </head>
 <body>
   <main>
     <section class="hero wrap">
+      <div class="hero-bg" style="background-image:url('${escapeHtml(heroBgUrl)}')"></div>
+      <div class="hero-overlay"></div>
       <p class="handle">${escapeHtml(workspace.handle || '')}</p>
       <h1>${escapeHtml(config.businessName || workspace.name || 'Mi sitio')}</h1>
       <p>${escapeHtml(config.headline)}</p>
