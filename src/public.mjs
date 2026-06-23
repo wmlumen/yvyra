@@ -59,6 +59,33 @@ if (shortSlug) {
   }
 } else if (canRenderProfile) {
   renderPage();
+  // Scroll a la sección indicada en el hash (ej: #sheet-stack-principal)
+  scrollToHash();
+}
+
+// Escuchar cambios de hash para navegación entre hojas
+window.addEventListener('hashchange', () => {
+  if (!canRenderProfile) return;
+  const hash = location.hash.replace(/^#/, '');
+  if (hash.startsWith('sheet-stack-')) {
+    const id = hash.replace('sheet-stack-', '');
+    const sheets = getSheets();
+    const idx = sheets.findIndex(s => s.id === id);
+    if (idx >= 0) {
+      activeSheetIndex = idx;
+      renderSheets();
+    }
+    // Scroll suave a la sección
+    const target = document.getElementById(hash);
+    if (target) target.scrollIntoView({ behavior: 'smooth' });
+  }
+});
+
+function scrollToHash() {
+  const hash = location.hash.replace(/^#/, '');
+  if (!hash) return;
+  const target = document.getElementById(hash);
+  if (target) setTimeout(() => target.scrollIntoView({ behavior: 'smooth' }), 100);
 }
 
 function getDefaultProfileExperience() {
@@ -260,7 +287,31 @@ function renderSheetTabs(sheets) {
 
 function renderSheetStage(sheets) {
   const stage = document.querySelector('#sheet-stage');
-  stage.replaceChildren(createSheetPanel(sheets[activeSheetIndex], { compact: false }));
+  stage.replaceChildren(createSheetPanel(sheets[activeSheetIndex], { compact: true }));
+  // Touch swipe: cambiar hoja deslizando
+  setupSheetSwipe(stage);
+}
+
+function setupSheetSwipe(stage) {
+  let startX = 0;
+  let startY = 0;
+  stage.addEventListener('touchstart', (e) => {
+    startX = e.changedTouches[0].screenX;
+    startY = e.changedTouches[0].screenY;
+  }, { passive: true });
+  stage.addEventListener('touchend', (e) => {
+    const dx = e.changedTouches[0].screenX - startX;
+    const dy = e.changedTouches[0].screenY - startY;
+    if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.5) {
+      const sheets = getSheets();
+      if (dx < 0) {
+        activeSheetIndex = (activeSheetIndex + 1) % sheets.length;
+      } else {
+        activeSheetIndex = (activeSheetIndex - 1 + sheets.length) % sheets.length;
+      }
+      renderSheets();
+    }
+  }, { passive: true });
 }
 
 function renderSheetDots(sheets) {
@@ -279,6 +330,14 @@ function renderScrollLinks(sheets) {
     anchor.className = 'button scroll-link';
     anchor.href = `#sheet-stack-${sheet.id}`;
     anchor.textContent = `Bajar a ${sheet.title}`;
+    anchor.addEventListener('click', (e) => {
+      e.preventDefault();
+      const target = document.getElementById(`sheet-stack-${sheet.id}`);
+      if (target) target.scrollIntoView({ behavior: 'smooth' });
+      // Actualizar la hoja activa para que coincida
+      activeSheetIndex = sheets.indexOf(sheet);
+      renderSheets();
+    });
     return anchor;
   }));
 }
