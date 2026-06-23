@@ -6,6 +6,14 @@
   
   <!-- SEO Básico -->
   <title>Negocio Local · EnlaceHub</title>
+  <script>
+  // Redirigir a la versión renderizada en servidor si hay tenant
+  (function() {
+    var p = new URLSearchParams(location.search);
+    var t = p.get('tenant') || p.get('profile') || p.get('subdomain');
+    if (t) { location.replace('/api/minisite/render?tenant=' + encodeURIComponent(t)); }
+  })();
+  </script>
   <meta name="description" content="Conoce nuestros servicios, información de contacto y ofertas especiales. Tu negocio local de confianza conectado a través de EnlaceHub.">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://tuplataforma.com/miniweb.html">

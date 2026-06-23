@@ -11,24 +11,15 @@ import { getPublicProfile, getPublicBlocks } from './api.mjs';
 
 let state = { profile: {}, miniSite: {}, classifieds: [] };
 
-function showError(msg) {
-  const el = document.createElement('div');
-  el.style.cssText = 'background:#fee;color:#c00;padding:16px;margin:16px;border-radius:8px;font-size:14px;';
-  el.textContent = '⚠️ ' + msg;
-  document.body.prepend(el);
-}
-
 try {
   const profileData = await getPublicProfile();
   state.profile = profileData;
   state.miniSite = profileData.miniSite || {};
-  if (!state.miniSite.published) showError('miniSite.published es false');
   
   const blocksData = await getPublicBlocks();
   state.classifieds = blocksData.filter(b => b.classified).map(b => b.classified);
 } catch (e) {
   console.error("No se pudo cargar la configuración de la miniweb", e);
-  showError('Error al cargar datos: ' + e.message);
 }
 
 const site = state.miniSite;
