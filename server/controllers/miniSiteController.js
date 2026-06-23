@@ -192,6 +192,7 @@ const HERO_BACKGROUNDS = {
   'cafe-aroma': 'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=960&h=540&fit=crop&crop=center',
   'cafearoma': 'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=960&h=540&fit=crop&crop=center',
   'techfix': 'https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=960&h=540&fit=crop&crop=center',
+  'techfixpro': 'https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=960&h=540&fit=crop&crop=center',
   'luna-arte': 'https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=960&h=540&fit=crop&crop=center',
   'lunaarte': 'https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=960&h=540&fit=crop&crop=center',
 };
