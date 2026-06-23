@@ -153,12 +153,36 @@ body[data-theme="dark"] .button.danger { background: rgba(153, 27, 27, 0.2); col
 .profile-hero-card,
 .profile-sections-card { border-radius: 32px; padding: 32px; }
 .profile-hero-card {
+  position: relative;
   margin-bottom: 24px;
   overflow: hidden; /* para que la imagen de fondo respete el border-radius */
-  background-blend-mode: overlay;
+}
+/* Imagen de fondo del hero (se carga vía JS o SSR) */
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-size: cover;
+  background-position: center;
+  border-radius: inherit;
+  transition: opacity 0.6s ease;
+}
+/* Overlay semitransparente para legibilidad del texto */
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.25), rgba(0,0,0,0.65));
+  border-radius: inherit;
+  pointer-events: none;
+}
+/* Todo el contenido del hero queda sobre el overlay */
+.profile-hero-card > *:not(.hero-bg):not(.hero-overlay) {
+  position: relative;
+  z-index: 2;
 }
 .profile-hero-card .avatar { 
-  position: relative; z-index: 1;
+  position: relative; z-index: 2;
 }
 .avatar { 
   width: 120px; height: 120px; border-radius: 50%; display: grid; place-items: center; 

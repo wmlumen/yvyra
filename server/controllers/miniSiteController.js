@@ -187,7 +187,11 @@ exports.downloadMiniSite = async (req, res) => {
   }
 };
 
+// ─────────────────────────────────────────────
 // Map de handles → imágenes de fondo Unsplash
+// Fuente única de verdad: src/heroBackgrounds.mjs
+// Ambas ubicaciones deben mantenerse sincronizadas.
+// ─────────────────────────────────────────────
 const HERO_BACKGROUNDS = {
   'milibeats': 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=960&h=540&fit=crop&crop=center',
   'cafe-aroma': 'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=960&h=540&fit=crop&crop=center',
