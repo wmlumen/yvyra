@@ -3,8 +3,129 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Plantillas - EnlaceHub</title>
+  <title>Plantillas · EnlaceHub</title>
   <link rel="stylesheet" href="assets/styles.css">
+  <style>
+    .template-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 24px;
+      padding: 40px 16px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .template-card {
+      border-radius: 16px;
+      overflow: hidden;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      transition: transform .2s, box-shadow .2s;
+      display: flex;
+      flex-direction: column;
+    }
+    .template-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 32px rgba(0,0,0,.3);
+    }
+    .template-mockup {
+      height: 200px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+    }
+    .template-mockup .avatar-circle {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.6rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,.2);
+      margin-bottom: 8px;
+    }
+    .template-mockup .mockup-name {
+      font-weight: 700;
+      font-size: 1rem;
+      color: #fff;
+      text-shadow: 0 2px 8px rgba(0,0,0,.3);
+    }
+    .template-mockup .mockup-link {
+      width: 60%;
+      height: 8px;
+      border-radius: 4px;
+      margin-top: 6px;
+      opacity: .4;
+    }
+    .template-info {
+      padding: 16px 20px 20px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .template-info h3 {
+      margin: 0 0 4px;
+      font-size: 1.15rem;
+    }
+    .template-info .theme-badge {
+      display: inline-block;
+      padding: 2px 10px;
+      border-radius: 20px;
+      font-size: .7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      margin: 4px 0 10px;
+      background: var(--accent);
+      color: #fff;
+    }
+    .template-info p {
+      margin: 0 0 14px;
+      font-size: .85rem;
+      color: var(--muted);
+      line-height: 1.5;
+      flex: 1;
+    }
+    .template-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: auto;
+    }
+    .template-actions .button {
+      flex: 1;
+      text-align: center;
+      min-height: 38px;
+      font-size: .82rem;
+      padding: 8px 12px;
+    }
+    .example-link {
+      font-size: .78rem;
+      color: var(--accent);
+      text-decoration: none;
+      border: 1px solid var(--accent);
+      border-radius: 8px;
+      padding: 8px 12px;
+      text-align: center;
+      flex: 1;
+      transition: background .2s;
+    }
+    .example-link:hover {
+      background: var(--accent);
+      color: #fff;
+    }
+    .section-title {
+      text-align: center;
+      padding: 40px 16px 0;
+    }
+    .section-title p {
+      color: var(--muted);
+      max-width: 600px;
+      margin: 8px auto 0;
+    }
+  </style>
 </head>
 <body data-theme="dark">
   <div class="shell">
@@ -16,51 +137,134 @@
         <a href="registro.html" class="button primary">Comenzar Gratis</a>
       </nav>
     </header>
-    
+
     <div class="commercial-hero">
-      <h1 class="holographic-text">Tu estilo. Tu marca.</h1>
-      <p>Personaliza tu espacio con plantillas ultra-premium diseñadas para convertir visitantes en seguidores y clientes.</p>
+      <h1 class="holographic-text">Elegí tu estilo.</h1>
+      <p>Cada plantilla incluye árbol de enlaces, miniweb, clasificados y acortador. Hacé clic en "Ver ejemplo vivo" para ver cómo funciona cada una.</p>
     </div>
 
     <div class="template-grid">
-      <!-- Dark Theme -->
+
+      <!-- 1. Obsidian Dark -->
       <div class="template-card">
-        <!-- Mockup generado o color solido -->
-        <div style="background: linear-gradient(to bottom, #0f172a, #000); width:100%; height:100%;" class="template-mockup"></div>
+        <div class="template-mockup" style="background:linear-gradient(145deg,#0f172a,#1e293b);">
+          <div class="avatar-circle" style="background:#8b5cf6;">☕</div>
+          <div class="mockup-name">Café Aroma</div>
+          <div class="mockup-link" style="background:#8b5cf6;"></div>
+          <div class="mockup-link" style="background:#475569;"></div>
+          <div class="mockup-link" style="background:#475569;width:40%;"></div>
+        </div>
         <div class="template-info">
           <h3>Obsidian Dark</h3>
-          <a href="registro.html" class="button primary" style="min-height:36px; padding: 8px 16px;">Usar</a>
+          <span class="theme-badge">dark</span>
+          <p>Fondo oscuro profundo con acentos violeta. Ideal para marcas que buscan un look moderno y nocturno.</p>
+          <div class="template-actions">
+            <a href="registro.html" class="button primary">Usar</a>
+            <a href="profile.html?tenant=cafe-aroma" class="example-link">Ver ejemplo vivo →</a>
+          </div>
         </div>
       </div>
 
-      <!-- Aurora Theme -->
+      <!-- 2. Clean Glass -->
       <div class="template-card">
-        <div style="background: linear-gradient(-45deg, #d8b4fe, #a7f3d0, #fbcfe8, #bfdbfe); width:100%; height:100%; animation: gradientBG 5s infinite; background-size: 400%;" class="template-mockup"></div>
+        <div class="template-mockup" style="background:linear-gradient(145deg,#f8fafc,#e2e8f0);">
+          <div class="avatar-circle" style="background:#2563eb;color:#fff;">🔧</div>
+          <div class="mockup-name" style="color:#0f172a;">TechFix Pro</div>
+          <div class="mockup-link" style="background:#cbd5e1;"></div>
+          <div class="mockup-link" style="background:#cbd5e1;"></div>
+          <div class="mockup-link" style="background:#cbd5e1;width:40%;"></div>
+        </div>
         <div class="template-info">
-          <h3>Aurora Borealis</h3>
-          <a href="registro.html" class="button primary" style="min-height:36px; padding: 8px 16px;">Usar</a>
+          <h3>Clean Glass</h3>
+          <span class="theme-badge">clean</span>
+          <p>Fondo claro con efecto glassmorphism. Perfecto para marcas profesionales y minimalistas.</p>
+          <div class="template-actions">
+            <a href="registro.html" class="button primary">Usar</a>
+            <a href="profile.html?tenant=techfix" class="example-link">Ver ejemplo vivo →</a>
+          </div>
         </div>
       </div>
 
-      <!-- Clean Theme -->
+      <!-- 3. Vibrant Artist -->
       <div class="template-card">
-        <div style="background: linear-gradient(to bottom, #ffffff, #f1f5f9); width:100%; height:100%;" class="template-mockup"></div>
+        <div class="template-mockup" style="background:linear-gradient(135deg,#7c3aed,#ec4899,#f59e0b);">
+          <div class="avatar-circle" style="background:rgba(255,255,255,.2);">🎨</div>
+          <div class="mockup-name">Luna Arte</div>
+          <div class="mockup-link" style="background:rgba(255,255,255,.3);"></div>
+          <div class="mockup-link" style="background:rgba(255,255,255,.3);"></div>
+          <div class="mockup-link" style="background:rgba(255,255,255,.3);width:40%;"></div>
+        </div>
         <div class="template-info">
-          <h3 style="color:#0f172a;">Clean Glass</h3>
-          <a href="registro.html" class="button primary" style="min-height:36px; padding: 8px 16px;">Usar</a>
+          <h3>Vibrant Artist</h3>
+          <span class="theme-badge">vibrant</span>
+          <p>Gradiente vibrante multicolor. Ideal para creativos, artistas y marcas que quieren destacar.</p>
+          <div class="template-actions">
+            <a href="registro.html" class="button primary">Usar</a>
+            <a href="profile.html?tenant=luna-arte" class="example-link">Ver ejemplo vivo →</a>
+          </div>
         </div>
       </div>
-      
-      <!-- Cyberpunk Theme -->
+
+      <!-- 4. Cyberpunk Neon -->
       <div class="template-card">
-        <div style="background: linear-gradient(to bottom, #111827, #374151); border: 2px solid #ec4899; width:100%; height:100%; box-shadow: inset 0 0 40px #ec4899;" class="template-mockup"></div>
+        <div class="template-mockup" style="background:#0d0d1a;border-bottom:2px solid #ec4899;">
+          <div style="position:absolute;top:10px;right:10px;font-size:2rem;opacity:.2;">⚡</div>
+          <div class="avatar-circle" style="background:linear-gradient(135deg,#ec4899,#06b6d4);">🔥</div>
+          <div class="mockup-name" style="color:#ec4899;">Neon Dash</div>
+          <div class="mockup-link" style="background:linear-gradient(90deg,#ec4899,#06b6d4);"></div>
+          <div class="mockup-link" style="background:#06b6d4;opacity:.5;"></div>
+          <div class="mockup-link" style="background:#ec4899;width:40%;opacity:.5;"></div>
+        </div>
         <div class="template-info">
           <h3>Cyberpunk Neon</h3>
-          <a href="registro.html" class="button primary" style="min-height:36px; padding: 8px 16px;">Pro</a>
+          <span class="theme-badge">neon</span>
+          <p>Estilo cyberpunk con neón rosa y cyan. Perfecto para gamers, tech y marcas disruptivas.</p>
+          <div class="template-actions">
+            <a href="registro.html" class="button primary">Usar</a>
+          </div>
         </div>
       </div>
+
+      <!-- 5. Forest Natural -->
+      <div class="template-card">
+        <div class="template-mockup" style="background:linear-gradient(145deg,#064e3b,#047857);">
+          <div class="avatar-circle" style="background:#a7f3d0;color:#064e3b;">🌿</div>
+          <div class="mockup-name">Verde Natura</div>
+          <div class="mockup-link" style="background:#6ee7b7;"></div>
+          <div class="mockup-link" style="background:#6ee7b7;opacity:.5;"></div>
+          <div class="mockup-link" style="background:#6ee7b7;width:40%;opacity:.5;"></div>
+        </div>
+        <div class="template-info">
+          <h3>Forest Natural</h3>
+          <span class="theme-badge">forest</span>
+          <p>Tonalidades verdes esmeralda. Ideal para marcas ecológicas, bienestar, salud y naturaleza.</p>
+          <div class="template-actions">
+            <a href="registro.html" class="button primary">Usar</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6. Ocean Deep -->
+      <div class="template-card">
+        <div class="template-mockup" style="background:linear-gradient(145deg,#0c4a6e,#0369a1);">
+          <div class="avatar-circle" style="background:#7dd3fc;color:#0c4a6e;">🌊</div>
+          <div class="mockup-name">Oceánica</div>
+          <div class="mockup-link" style="background:#38bdf8;"></div>
+          <div class="mockup-link" style="background:#38bdf8;opacity:.5;"></div>
+          <div class="mockup-link" style="background:#38bdf8;width:40%;opacity:.5;"></div>
+        </div>
+        <div class="template-info">
+          <h3>Ocean Deep</h3>
+          <span class="theme-badge">ocean</span>
+          <p>Azul océano profundo. Transmite confianza y serenidad. Perfecto para fintech, consultorías y servicios.</p>
+          <div class="template-actions">
+            <a href="registro.html" class="button primary">Usar</a>
+          </div>
+        </div>
+      </div>
+
     </div>
-    
+
     <footer>
       <p>© 2026 EnlaceHub. Elevando el estándar del enlace en bio.</p>
     </footer>
