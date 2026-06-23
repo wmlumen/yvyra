@@ -124,6 +124,18 @@ a { color: inherit; transition: color 0.3s var(--smooth); }
 .button.danger { border-color: transparent; background: #fee2e2; color: #b91c1c; }
 body[data-theme="dark"] .button.danger { background: rgba(153, 27, 27, 0.2); color: #fca5a5; }
 
+/* Botón solo icono (WhatsApp, etc.) */
+.button.icon-btn {
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  border-radius: 50%;
+}
+.button.icon-btn svg {
+  display: block;
+  margin: auto;
+}
+
 .button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible, a:focus-visible { outline: 3px solid color-mix(in srgb, var(--accent) 60%, transparent); outline-offset: 4px; }
 .button:disabled { opacity: 0.5; cursor: not-allowed; transform: none !important; }
 
