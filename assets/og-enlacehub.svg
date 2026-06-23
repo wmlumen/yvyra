@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">EnlaceHub</title>
+  <desc id="desc">Perfil, clasificados y miniweb para negocios</desc>
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#07111f" />
+      <stop offset="55%" stop-color="#0f2742" />
+      <stop offset="100%" stop-color="#154b8b" />
+    </linearGradient>
+    <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#7dd3fc" />
+      <stop offset="100%" stop-color="#f59e0b" />
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)" />
+  <circle cx="1010" cy="138" r="110" fill="#ffffff" fill-opacity="0.08" />
+  <circle cx="1085" cy="220" r="56" fill="#ffffff" fill-opacity="0.1" />
+  <circle cx="150" cy="525" r="90" fill="#ffffff" fill-opacity="0.06" />
+  <rect x="84" y="82" width="1032" height="466" rx="34" fill="#06101c" fill-opacity="0.22" stroke="#ffffff" stroke-opacity="0.16" />
+  <text x="120" y="196" fill="#ffffff" font-family="Segoe UI, Arial, sans-serif" font-size="42" font-weight="700" letter-spacing="6">ENLACEHUB</text>
+  <text x="120" y="292" fill="#ffffff" font-family="Segoe UI, Arial, sans-serif" font-size="74" font-weight="800">Perfil, clasificados y</text>
+  <text x="120" y="372" fill="#ffffff" font-family="Segoe UI, Arial, sans-serif" font-size="74" font-weight="800">miniweb para negocios</text>
+  <rect x="120" y="418" width="256" height="14" rx="7" fill="url(#accent)" />
+  <text x="120" y="484" fill="#dbeafe" font-family="Segoe UI, Arial, sans-serif" font-size="31" font-weight="500">Una sola plataforma para vender, mostrar tu marca y recibir contactos.</text>
+  <g transform="translate(870 380)">
+    <rect width="164" height="118" rx="24" fill="#0f2742" stroke="#7dd3fc" stroke-opacity="0.45" />
+    <circle cx="50" cy="40" r="17" fill="#7dd3fc" />
+    <rect x="78" y="28" width="52" height="10" rx="5" fill="#f8fafc" fill-opacity="0.9" />
+    <rect x="78" y="49" width="38" height="8" rx="4" fill="#cbd5e1" fill-opacity="0.9" />
+    <rect x="28" y="77" width="108" height="12" rx="6" fill="#f59e0b" />
+  </g>
+</svg>
