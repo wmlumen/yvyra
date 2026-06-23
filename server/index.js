@@ -44,7 +44,7 @@ if (isProduction) {
   app.use(express.static(frontendPath));
   
   // Fallback SPA: cualquier ruta no-API redirige a index.html
-  app.get('*', (req, res, next) => {
+  app.get('{*path}', (req, res, next) => {
     if (!req.path.startsWith('/api/')) {
       res.sendFile(path.join(frontendPath, 'index.html'));
     } else {
