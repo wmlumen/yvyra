@@ -5,7 +5,7 @@
   "type": "module",
   "description": "MVP local de un árbol de enlaces con subdominio por usuario, clasificados, miniweb, WhatsApp y analíticas.",
   "scripts": {
-    "start": "cd server && node index.js",
+    "start": "cd server && npx prisma db push --accept-data-loss && node index.js",
     "dev": "python3 -m http.server 8080",
     "dev:server": "cd server && node index.js",
     "dev:all": "concurrently \"python3 -m http.server 8080\" \"cd server && node index.js\"",
