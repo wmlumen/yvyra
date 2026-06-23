@@ -5,7 +5,7 @@
 
 const prisma = require('../lib/prisma');
 const { AppError } = require('../middleware/errorHandler');
-const { asyncHandler, parseBlockPayload } = require('../lib/utils');
+const { asyncHandler, parseBlockPayload, stringifyPayload } = require('../lib/utils');
 
 // Obtener todos los bloques públicos de un árbol dado un workspaceId
 exports.getPublicBlocks = asyncHandler(async (req, res) => {

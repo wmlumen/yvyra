@@ -4,7 +4,7 @@
 
 const prisma = require('../lib/prisma');
 const { AppError } = require('../middleware/errorHandler');
-const { asyncHandler } = require('../lib/utils');
+const { asyncHandler, parseMiniSite } = require('../lib/utils');
 
 // Obtener perfil público (visitantes) - Resuelve con tenantResolver
 exports.getPublicProfile = asyncHandler(async (req, res) => {
