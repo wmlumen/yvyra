@@ -11,10 +11,18 @@ async function main() {
     process.exit(1);
   }
 
+  const existingAdmin = await prisma.user.findFirst({
+    where: { role: 'ADMIN' },
+    select: { id: true, email: true, name: true }
+  });
+
   const existingUser = await prisma.user.findUnique({ where: { email } });
   if (existingUser) {
     if (existingUser.role === 'ADMIN') {
       console.log(`El usuario ${email} ya existe y es ADMIN.`);
+    } else if (existingAdmin && existingAdmin.email !== email) {
+      console.error(`Ya existe un Superadmin global: ${existingAdmin.email}. No se puede crear otro.`);
+      process.exit(1);
     } else {
       await prisma.user.update({
         where: { email },
@@ -23,6 +31,11 @@ async function main() {
       console.log(`El usuario ${email} ha sido ascendido a ADMIN.`);
     }
     process.exit(0);
+  }
+
+  if (existingAdmin) {
+    console.error(`Ya existe un Superadmin global: ${existingAdmin.email}. No se puede crear otro.`);
+    process.exit(1);
   }
 
   const hashedPassword = await bcrypt.hash(password, 10);
@@ -47,7 +60,7 @@ async function main() {
     }
   });
 
-  console.log(`✅ Súper Administrador creado exitosamente: ${admin.email}`);
+  console.log(`✅ Superadmin global creado exitosamente: ${admin.email}`);
 }
 
 main()

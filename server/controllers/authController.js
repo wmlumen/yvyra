@@ -104,7 +104,7 @@ exports.login = asyncHandler(async (req, res) => {
 
   res.json({
     message: 'Login exitoso',
-    user: { id: user.id, email: user.email, name: user.name }
+    user: { id: user.id, email: user.email, name: user.name, role: user.role || 'USER' }
   });
 });
 

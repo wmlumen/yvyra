@@ -10,6 +10,7 @@ import {
 
 import { getPublicBlocks, getPublicProfile } from './api.mjs';
 import { resolveHeroBg } from './heroBackgrounds.mjs';
+import { buildTenantPageUrl, getExplicitTenant } from './surfaces.mjs';
 
 const SOCIAL_META = {
   instagram: { label: 'Instagram', short: 'IG' },
@@ -19,6 +20,8 @@ const SOCIAL_META = {
   whatsapp: { label: 'WhatsApp', short: 'WA' },
   telegram: { label: 'Telegram', short: 'TG' }
 };
+const explicitTenant = getExplicitTenant(location.search);
+const publicProfileUrl = new URL(buildTenantPageUrl('profile.html', explicitTenant), location.href).toString();
 
 let activeSheetIndex = 0;
 let state = { profile: {}, miniSite: {}, links: [], profileExperience: getDefaultProfileExperience() };
@@ -56,7 +59,7 @@ if (shortSlug) {
     saveState(state);
     location.replace(item.url);
   } else {
-    document.body.innerHTML = '<main class="profile-page"><h1>Enlace no disponible</h1><p class="muted">El enlace corto no existe o está desactivado.</p><a class="button" href="index.html">Volver</a></main>';
+    document.body.innerHTML = `<main class="profile-page"><h1>Enlace no disponible</h1><p class="muted">El enlace corto no existe o está desactivado.</p><a class="button" href="${publicProfileUrl}">Volver</a></main>`;
   }
 } else if (canRenderProfile) {
   renderPage();
@@ -196,16 +199,23 @@ function renderPage() {
   }
 
   renderSocials();
+  renderIdentityStrip();
   renderSheets();
+  renderHubGrid();
 
   const miniSiteLink = document.querySelector('#mini-site-link');
   if (!state.miniSite?.published) miniSiteLink.hidden = true;
+  miniSiteLink.href = buildTenantPageUrl('miniweb.html');
+  document.querySelector('#classifieds-link').href = buildTenantPageUrl('clasificados.html');
+
+  setupDirectContact();
+  setupVcardDownload();
 
   recordEvent(state, 'page_view', null, new Date(), attribution);
   saveState(state);
 
   document.querySelector('#whatsapp-share-button').addEventListener('click', () => {
-    const shareUrl = buildTrackedUrl(new URL('index.html', location.href).toString(), {
+    const shareUrl = buildTrackedUrl(publicProfileUrl, {
       source: 'whatsapp',
       medium: 'messaging',
       campaign: 'profile-share'
@@ -266,6 +276,163 @@ function renderSocials() {
 
     anchor.append(icon, text);
     return anchor;
+  }));
+}
+
+function renderIdentityStrip() {
+  const container = document.querySelector('#identity-strip');
+  const items = [];
+  const businessName = String(state.miniSite?.businessName || '').trim();
+  const address = String(state.miniSite?.address || '').trim();
+  const email = String(state.miniSite?.email || '').trim();
+  const whatsapp = String(state.miniSite?.whatsapp || '').replace(/\D+/g, '');
+
+  if (businessName && businessName !== state.profile.name) items.push({ label: 'Marca', value: businessName });
+  if (address) items.push({ label: 'Ubicación', value: address });
+  if (email) items.push({ label: 'Correo', value: email });
+  if (whatsapp) items.push({ label: 'WhatsApp', value: `+${whatsapp}` });
+
+  if (!items.length) {
+    container.hidden = true;
+    container.replaceChildren();
+    return;
+  }
+
+  container.hidden = false;
+  container.replaceChildren(...items.map((item) => {
+    const article = document.createElement('article');
+    article.className = 'identity-pill';
+
+    const label = document.createElement('span');
+    label.className = 'identity-label';
+    label.textContent = item.label;
+
+    const value = document.createElement('strong');
+    value.className = 'identity-value';
+    value.textContent = item.value;
+
+    article.append(label, value);
+    return article;
+  }));
+}
+
+function setupDirectContact() {
+  const button = document.querySelector('#direct-contact-button');
+  const whatsapp = String(state.miniSite?.whatsapp || '').replace(/\D+/g, '');
+  const email = String(state.miniSite?.email || '').trim();
+
+  if (whatsapp) {
+    button.hidden = false;
+    button.href = buildWhatsAppShareUrl({
+      phone: whatsapp,
+      text: `Hola, vi el perfil de ${state.profile.name || state.miniSite?.businessName || 'este perfil'} y quiero más información.`
+    });
+    button.target = '_blank';
+    button.rel = 'noopener noreferrer';
+    button.textContent = 'Escribir por WhatsApp';
+    return;
+  }
+
+  if (email) {
+    button.hidden = false;
+    button.href = `mailto:${encodeURIComponent(email)}`;
+    button.removeAttribute('target');
+    button.removeAttribute('rel');
+    button.textContent = 'Enviar correo';
+    return;
+  }
+
+  button.hidden = true;
+}
+
+function setupVcardDownload() {
+  const button = document.querySelector('#download-contact-button');
+  const email = String(state.miniSite?.email || '').trim();
+  const whatsapp = String(state.miniSite?.whatsapp || '').replace(/\D+/g, '');
+  const address = String(state.miniSite?.address || '').trim();
+
+  if (!email && !whatsapp && !address) {
+    button.hidden = true;
+    return;
+  }
+
+  button.hidden = false;
+  button.addEventListener('click', () => {
+    const lines = [
+      'BEGIN:VCARD',
+      'VERSION:3.0',
+      `FN:${escapeVCard(state.profile.name || state.miniSite?.businessName || 'Contacto EnlaceHub')}`,
+      `N:${escapeVCard(state.profile.name || state.miniSite?.businessName || 'Contacto EnlaceHub')};;;;`
+    ];
+
+    if (state.profile.bio) lines.push(`NOTE:${escapeVCard(state.profile.bio)}`);
+    if (email) lines.push(`EMAIL;TYPE=INTERNET:${escapeVCard(email)}`);
+    if (whatsapp) lines.push(`TEL;TYPE=CELL:+${whatsapp}`);
+    if (address) lines.push(`ADR:;;${escapeVCard(address)};;;;`);
+    lines.push('END:VCARD');
+
+    const blob = new Blob([`${lines.join('\n')}\n`], { type: 'text/vcard;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const anchor = document.createElement('a');
+    anchor.href = url;
+    anchor.download = `${slugifyFilename(state.profile.name || state.miniSite?.businessName || 'contacto')}.vcf`;
+    document.body.append(anchor);
+    anchor.click();
+    anchor.remove();
+    URL.revokeObjectURL(url);
+  });
+}
+
+function renderHubGrid() {
+  const container = document.querySelector('#hub-grid');
+  const links = getVisibleLinks();
+  const items = [
+    {
+      eyebrow: 'Árbol principal',
+      title: 'Identidad y accesos',
+      description: `${links.length} enlace${links.length === 1 ? '' : 's'} visible${links.length === 1 ? '' : 's'} desde esta tarjeta digital.`,
+      href: '#sheet-stack-principal',
+      actionLabel: 'Ver hoja principal'
+    },
+    {
+      eyebrow: 'Clasificados',
+      title: 'Publicación y descubrimiento',
+      description: 'Explora anuncios conectados a este perfil con filtros, categorías y contacto directo.',
+      href: buildTenantPageUrl('clasificados.html'),
+      actionLabel: 'Abrir clasificados'
+    },
+    {
+      eyebrow: 'Miniweb',
+      title: 'Contenido y conversión',
+      description: state.miniSite?.published
+        ? 'Presentación extendida con servicios, contacto y CTA del negocio.'
+        : 'La miniweb todavía no está publicada para este perfil.',
+      href: state.miniSite?.published ? buildTenantPageUrl('miniweb.html') : 'dashboard.html',
+      actionLabel: state.miniSite?.published ? 'Abrir miniweb' : 'Ir al panel'
+    }
+  ];
+
+  container.replaceChildren(...items.map((item) => {
+    const article = document.createElement('article');
+    article.className = 'hub-card';
+
+    const eyebrow = document.createElement('p');
+    eyebrow.className = 'eyebrow';
+    eyebrow.textContent = item.eyebrow;
+
+    const title = document.createElement('h3');
+    title.textContent = item.title;
+
+    const description = document.createElement('p');
+    description.textContent = item.description;
+
+    const action = document.createElement('a');
+    action.className = 'button';
+    action.href = item.href;
+    action.textContent = item.actionLabel;
+
+    article.append(eyebrow, title, description, action);
+    return article;
   }));
 }
 
@@ -472,4 +639,22 @@ function createLinkNode(link) {
     saveState(state);
   });
   return anchor;
+}
+
+function escapeVCard(value) {
+  return String(value ?? '')
+    .replaceAll('\\', '\\\\')
+    .replaceAll(';', '\\;')
+    .replaceAll(',', '\\,')
+    .replaceAll('\n', '\\n');
+}
+
+function slugifyFilename(value) {
+  return String(value ?? 'contacto')
+    .trim()
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '') || 'contacto';
 }

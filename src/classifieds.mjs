@@ -1,23 +1,37 @@
 import {
   CLASSIFIED_CATEGORIES,
+  CLASSIFIED_KINDS,
   parseTrafficAttribution,
   recordEvent,
   saveState
 } from './core.mjs';
 
 import { searchClassifieds } from './api.mjs';
+import { buildTenantPageUrl, getExplicitTenant } from './surfaces.mjs';
 
 const attribution = parseTrafficAttribution(location.search);
+const explicitTenant = getExplicitTenant(location.search);
 const searchInput = document.querySelector('#classified-search');
 const categoryInput = document.querySelector('#classified-category');
+const kindInput = document.querySelector('#classified-kind');
 const sortInput = document.querySelector('#classified-sort');
+const categoryChipRow = document.querySelector('#category-chip-row');
 const state = { events: [] };
+
+syncTenantLinks();
 
 for (const category of CLASSIFIED_CATEGORIES) {
   const option = document.createElement('option');
   option.value = category;
   option.textContent = category;
   categoryInput.append(option);
+}
+
+for (const kind of CLASSIFIED_KINDS) {
+  const option = document.createElement('option');
+  option.value = kind.value;
+  option.textContent = kind.label;
+  kindInput.append(option);
 }
 
 let debounceTimer;
@@ -27,6 +41,7 @@ searchInput.addEventListener('input', () => {
 });
 
 categoryInput.addEventListener('change', fetchAndRender);
+kindInput.addEventListener('change', fetchAndRender);
 sortInput.addEventListener('change', fetchAndRender);
 
 fetchAndRender();
@@ -34,20 +49,97 @@ fetchAndRender();
 async function fetchAndRender() {
   const query = searchInput.value.trim();
   const category = categoryInput.value;
+  const kind = kindInput.value;
   const sort = sortInput.value;
 
   const params = {};
   if (query) params.q = query;
   if (category) params.category = category;
+  if (kind) params.kind = kind;
   if (sort === 'price-asc') params.sortBy = 'price_asc';
   if (sort === 'price-desc') params.sortBy = 'price_desc';
 
   try {
-    const items = await searchClassifieds(params);
+    const items = sortClientSide(await searchClassifieds(params), sort);
+    renderSummary(items, { query, category, kind });
+    renderCategoryChips(items, category);
     renderItems(items);
   } catch (error) {
     console.error('Error fetching classifieds:', error);
     document.querySelector('#classified-list').innerHTML = '<div class="empty catalog-empty notice error">Error al conectar con el servidor de búsqueda.</div>';
+  }
+}
+
+function sortClientSide(items, sort) {
+  const ranked = [...items];
+
+  if (sort === 'featured') {
+    ranked.sort((a, b) => {
+      const featuredScore = Number(Boolean(b.featured)) - Number(Boolean(a.featured));
+      if (featuredScore !== 0) return featuredScore;
+      return new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime();
+    });
+    return ranked;
+  }
+
+  if (sort === 'newest') {
+    ranked.sort((a, b) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime());
+  }
+
+  return ranked;
+}
+
+function renderSummary(items, { query, category, kind }) {
+  const summary = document.querySelector('#catalog-summary');
+  const featuredCount = items.filter((item) => item.featured).length;
+  const categories = new Set(items.map((item) => item.category).filter(Boolean));
+  const pills = [
+    `${items.length} resultado${items.length === 1 ? '' : 's'}`,
+    `${featuredCount} destacado${featuredCount === 1 ? '' : 's'}`,
+    `${categories.size} categoría${categories.size === 1 ? '' : 's'}`
+  ];
+
+  if (query) pills.push(`búsqueda: ${query}`);
+  if (category) pills.push(`filtro: ${category}`);
+  if (kind) pills.push(`tipo: ${resolveKindLabel(kind)}`);
+
+  summary.replaceChildren(...pills.map((text) => {
+    const span = document.createElement('span');
+    span.className = 'summary-pill';
+    span.textContent = text;
+    return span;
+  }));
+}
+
+function renderCategoryChips(items, activeCategory) {
+  const counts = new Map();
+  for (const item of items) {
+    counts.set(item.category, (counts.get(item.category) || 0) + 1);
+  }
+
+  const chips = CLASSIFIED_CATEGORIES
+    .filter((category) => counts.has(category))
+    .map((category) => {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = `category-chip${category === activeCategory ? ' is-active' : ''}`;
+      button.textContent = `${category} · ${counts.get(category)}`;
+      button.addEventListener('click', () => {
+        categoryInput.value = category === activeCategory ? '' : category;
+        fetchAndRender();
+      });
+      return button;
+    });
+
+  categoryChipRow.replaceChildren(...chips);
+}
+
+function syncTenantLinks() {
+  if (!explicitTenant) return;
+  for (const anchor of document.querySelectorAll('a[href$=".html"]')) {
+    const url = new URL(anchor.getAttribute('href'), location.href);
+    url.searchParams.set('tenant', explicitTenant);
+    anchor.href = `${url.pathname.split('/').pop()}?${url.searchParams.toString()}`;
   }
 }
 
@@ -92,6 +184,7 @@ function createCard(item) {
   // Meta (badges row)
   const meta = document.createElement('div');
   meta.className = 'classified-meta';
+  meta.append(badge(item.kindLabel || resolveKindLabel(item.kind), 'kind'));
   meta.append(badge(item.category));
   if (item.featured) meta.append(badge('Destacado', 'featured'));
 
@@ -155,7 +248,7 @@ function createCard(item) {
   poster.className = 'classified-poster';
   if (item.workspace && item.workspace.name) {
     const tenant = item.workspace.domainMappings?.[0]?.hostname;
-    const profileUrl = tenant ? `profile.html?tenant=${tenant}` : '#';
+    const profileUrl = tenant ? buildTenantPageUrl('profile.html', tenant) : '#';
     const authorLink = document.createElement('a');
     authorLink.className = 'poster-link';
     authorLink.href = profileUrl;
@@ -206,4 +299,8 @@ function formatPrice(item) {
   } catch {
     return `${Number(item.price).toLocaleString('es')} ${item.currency || 'USD'}`;
   }
+}
+
+function resolveKindLabel(kind) {
+  return CLASSIFIED_KINDS.find((entry) => entry.value === kind)?.label || 'Clasificado tradicional';
 }

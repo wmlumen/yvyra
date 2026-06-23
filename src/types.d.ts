@@ -40,6 +40,8 @@ export interface Link {
 
 export interface Classified {
   id: string;
+  kind: string;
+  kindLabel: string;
   title: string;
   description: string;
   category: string;
@@ -48,6 +50,7 @@ export interface Classified {
   location: string;
   contactUrl: string;
   imageUrl: string;
+  tags: string[];
   active: boolean;
   featured: boolean;
   createdAt: string;

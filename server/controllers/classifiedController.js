@@ -1,9 +1,11 @@
 const prisma = require('../lib/prisma');
+const { getKindLabel, normalizeKind } = require('../lib/classifiedKinds');
 // Buscador Global de Clasificados
 exports.searchClassifieds = async (req, res) => {
   try {
     const { 
       q,           // Búsqueda por texto (palabras clave)
+      kind,        // Tipo de ficha publicable
       category,    // Filtrar por categoría
       minPrice,    // Rango de precio
       maxPrice,
@@ -14,10 +16,12 @@ exports.searchClassifieds = async (req, res) => {
     // Construir los filtros dinámicamente
     const filters = {
       block: {
-        isActive: true
+        isActive: true,
+        type: { in: ['classified', 'product', 'service', 'event', 'need', 'promo', 'donation'] }
       }
     };
 
+    if (kind) filters.block.type = normalizeKind(kind);
     if (category) filters.category = category;
     if (location) filters.location = { contains: location };
     
@@ -73,6 +77,8 @@ exports.searchClassifieds = async (req, res) => {
 
       return {
         id: item.id,
+        kind: normalizeKind(item.block?.type),
+        kindLabel: getKindLabel(item.block?.type),
         title: item.block?.title || 'Clasificado',
         description: item.description,
         category: item.category,
@@ -85,6 +91,9 @@ exports.searchClassifieds = async (req, res) => {
         featured: item.isFeatured,
         expiresAt: item.expiresAt,
         createdAt: item.createdAt,
+        tags: (() => {
+          try { return JSON.parse(item.tags || '[]'); } catch { return []; }
+        })(),
         imageUrl: payload.imageUrl || '',
         contactUrl: payload.contactUrl || '',
         workspace: item.block?.workspace || null

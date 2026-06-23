@@ -196,7 +196,7 @@ async function renderUsers() {
         <div>
           <div class="item-title">
             ${user.name}
-            <span class="badge" style="background: transparent; color: var(--muted);">${user.role}</span>
+            <span class="badge" style="background: transparent; color: var(--muted);">${user.role === 'ADMIN' ? 'SUPERADMIN' : 'CLIENTE'}</span>
           </div>
           <div class="item-url">
             ${user.email} · Registrado: ${new Date(user.createdAt).toLocaleDateString()} ·
@@ -209,23 +209,7 @@ async function renderUsers() {
       const actions = document.createElement('div');
       actions.className = 'actions';
 
-      if (user.id !== session.user.userId) {
-        if (user.role !== 'ADMIN') {
-          // Botón ascender a admin
-          const promoteBtn = document.createElement('button');
-          promoteBtn.className = 'button';
-          promoteBtn.textContent = 'Ascender a Admin';
-          promoteBtn.addEventListener('click', () => changeRole(user.id, user.name, 'ADMIN'));
-          actions.appendChild(promoteBtn);
-        } else {
-          // Botón degradar a user
-          const demoteBtn = document.createElement('button');
-          demoteBtn.className = 'button';
-          demoteBtn.textContent = 'Degradar a User';
-          demoteBtn.addEventListener('click', () => changeRole(user.id, user.name, 'USER'));
-          actions.appendChild(demoteBtn);
-        }
-
+      if (user.id !== session.user.userId && user.role !== 'ADMIN') {
         const delBtn = document.createElement('button');
         delBtn.className = 'button danger';
         delBtn.textContent = 'Eliminar';
@@ -250,7 +234,7 @@ async function renderUsers() {
 }
 
 async function changeRole(id, name, newRole) {
-  const action = newRole === 'ADMIN' ? 'ASCENDER a administrador' : 'DEGRADAR a usuario';
+  const action = newRole === 'ADMIN' ? 'ASCENDER a superadmin' : 'DEGRADAR a cliente';
   if (!confirm(`¿Estás seguro de ${action} a ${name}?`)) return;
   try {
     await updateUserRole(id, newRole);

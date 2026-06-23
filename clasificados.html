@@ -41,7 +41,7 @@
   <header class="shell topbar">
     <a class="brand" href="index.html">EnlaceHub</a>
     <nav class="nav" aria-label="Principal">
-      <a href="index.html">Página principal</a>
+      <a href="index.html">Árbol principal</a>
       <a href="clasificados-admin.html">Publicar o administrar</a>
       <a href="dashboard.html">Panel</a>
       <a href="miniweb.html">Miniweb</a>
@@ -50,9 +50,10 @@
 
   <main class="shell catalog-page">
     <section class="catalog-hero">
-      <p class="eyebrow">Módulo secundario</p>
-      <h1>Clasificados</h1>
-      <p class="muted">Anuncios organizados y conectados indirectamente desde el árbol de enlaces.</p>
+      <p class="eyebrow">Publicación y descubrimiento</p>
+      <h1>Clasificados conectados al perfil</h1>
+      <p class="muted">Publica ofertas, servicios y oportunidades; descubre anuncios filtrables y contacta directo desde el ecosistema del usuario.</p>
+      <div class="catalog-summary" id="catalog-summary" aria-live="polite"></div>
     </section>
 
     <section class="card filter-panel" aria-labelledby="filter-title">
@@ -67,6 +68,10 @@
           <select id="classified-category"><option value="">Todas</option></select>
         </div>
         <div class="form-row">
+          <label for="classified-kind">Tipo de ficha</label>
+          <select id="classified-kind"><option value="">Todos</option></select>
+        </div>
+        <div class="form-row">
           <label for="classified-sort">Orden</label>
           <select id="classified-sort">
             <option value="featured">Destacados primero</option>
@@ -77,6 +82,7 @@
         </div>
       </form>
       <p id="classified-count" class="muted" aria-live="polite"></p>
+      <div class="category-chip-row" id="category-chip-row" aria-label="Atajos por categoría"></div>
     </section>
 
     <section id="classified-list" class="classified-grid" aria-label="Listado de anuncios"></section>

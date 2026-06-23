@@ -8,8 +8,10 @@ import {
 } from './core.mjs';
 
 import { getPublicProfile, getPublicBlocks } from './api.mjs';
+import { buildTenantPageUrl, getExplicitTenant } from './surfaces.mjs';
 
 let state = { profile: {}, miniSite: {}, classifieds: [] };
+const explicitTenant = getExplicitTenant(location.search);
 
 try {
   const profileData = await getPublicProfile();
@@ -27,7 +29,7 @@ const attribution = parseTrafficAttribution(location.search);
 const $ = (selector) => document.querySelector(selector);
 
 if (!site.published) {
-  document.body.innerHTML = '<main class="profile-page"><h1>Miniweb no publicada</h1><p class="muted">El propietario ha desactivado temporalmente esta página.</p><a class="button" href="index.html">Ver árbol principal</a></main>';
+  document.body.innerHTML = `<main class="profile-page"><h1>Miniweb no publicada</h1><p class="muted">El propietario ha desactivado temporalmente esta página.</p><a class="button" href="${buildTenantPageUrl('profile.html', explicitTenant)}">Ver árbol principal</a></main>`;
 } else {
   render();
 }
@@ -43,7 +45,7 @@ function render() {
 
   const primaryCta = $('#mini-primary-cta');
   primaryCta.textContent = site.primaryCtaLabel || 'Ver árbol';
-  primaryCta.href = resolveInternalOrHttp(site.primaryCtaUrl || 'index.html');
+  primaryCta.href = resolveInternalOrHttp(site.primaryCtaUrl || buildTenantPageUrl('profile.html', explicitTenant));
   primaryCta.addEventListener('click', () => saveCtaEvent('primary'));
 
   const whatsappNumber = String(site.whatsapp || '').replace(/\D+/g, '');
@@ -136,9 +138,9 @@ function addContactLink(label, href) {
 function resolveInternalOrHttp(value) {
   try {
     const url = new URL(value, location.href);
-    return ['http:', 'https:'].includes(url.protocol) ? url.toString() : 'index.html';
+    return ['http:', 'https:'].includes(url.protocol) ? url.toString() : buildTenantPageUrl('profile.html', explicitTenant);
   } catch {
-    return 'index.html';
+    return buildTenantPageUrl('profile.html', explicitTenant);
   }
 }
 

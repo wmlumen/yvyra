@@ -1,4 +1,4 @@
-import { CLASSIFIED_CATEGORIES } from './core.mjs';
+import { CLASSIFIED_CATEGORIES, CLASSIFIED_KINDS } from './core.mjs';
 import { checkSession } from './auth.mjs';
 import { getPrivateBlocks, createBlock, updateBlock, deleteBlock } from './api.mjs';
 
@@ -14,6 +14,7 @@ async function loadData() {
     const blocksData = await getPrivateBlocks();
     state.classifieds = blocksData.filter(b => b.classified).map(b => ({
       id: b.id,
+      kind: b.type || 'classified',
       title: b.title,
       active: b.isActive,
       ...b.classified,
@@ -32,6 +33,13 @@ for (const category of CLASSIFIED_CATEGORIES) {
   $('#ad-category').append(option);
 }
 
+for (const kind of CLASSIFIED_KINDS) {
+  const option = document.createElement('option');
+  option.value = kind.value;
+  option.textContent = kind.label;
+  $('#ad-kind').append(option);
+}
+
 $('#classified-form').addEventListener('submit', async (event) => {
   event.preventDefault();
   const submitBtn = event.target.querySelector('button[type="submit"]');
@@ -43,10 +51,11 @@ $('#classified-form').addEventListener('submit', async (event) => {
     const id = $('#classified-editing-id').value;
     
     const blockData = {
-      type: 'classified',
+      type: input.kind,
       title: input.title,
       isActive: input.active,
       classifiedData: {
+         tags: [input.kind],
          category: input.category,
          description: input.description,
          price: input.price,
@@ -80,6 +89,7 @@ render();
 
 function readForm() {
   return {
+    kind: $('#ad-kind').value,
     title: $('#ad-title').value,
     description: $('#ad-description').value,
     category: $('#ad-category').value,
@@ -116,7 +126,8 @@ function render() {
 
     const details = document.createElement('div');
     details.className = 'item-url';
-    details.textContent = `${item.category} · ${item.location || 'Sin ubicación'} · ${item.price ?? 'Consultar'} ${item.currency || ''}`;
+    const kindLabel = CLASSIFIED_KINDS.find((entry) => entry.value === item.kind)?.label || 'Clasificado tradicional';
+    details.textContent = `${kindLabel} · ${item.category} · ${item.location || 'Sin ubicación'} · ${item.price ?? 'Consultar'} ${item.currency || ''}`;
 
     const actions = document.createElement('div');
     actions.className = 'actions';
@@ -141,6 +152,7 @@ function button(text, handler, extraClass = '') {
 
 function edit(item) {
   $('#classified-editing-id').value = item.id;
+  $('#ad-kind').value = item.kind || 'classified';
   $('#ad-title').value = item.title;
   $('#ad-description').value = item.description;
   $('#ad-category').value = item.category;
@@ -161,6 +173,7 @@ async function toggle(id) {
   if (!item) return;
   try {
     await updateBlock(id, {
+      type: item.kind || 'classified',
       title: item.title,
       isActive: !item.active,
       payload: { contactUrl: item.contactUrl, imageUrl: item.imageUrl, expiresAt: item.expiresAt }
@@ -188,6 +201,7 @@ async function remove(id) {
 function resetForm() {
   $('#classified-form').reset();
   $('#classified-editing-id').value = '';
+  $('#ad-kind').value = 'classified';
   $('#ad-active').checked = true;
   $('#ad-cancel-edit').hidden = true;
 }

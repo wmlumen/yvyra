@@ -1,56 +1,74 @@
-# Visión del Producto: Plataforma Integral (Árbol + Módulos)
+# Visión del Producto: Plataforma Integral (4 Superficies Base)
 
-## Módulos que puede generar el árbol
+La plataforma se reorganiza en cuatro superficies base. Los 11 módulos conceptuales viven dentro de estas cuatro y no como productos separados.
 
-### 1. Clasificados
-Cada usuario tendría su propio espacio para publicar:
-- Productos, Servicios, Empleos, Propiedades, Vehículos, Eventos, Promociones.
-- Búsqueda y orden por: Fecha, Precio, Popularidad, Ubicación, Categoría, Estado, Disponibilidad, Vendedor, Palabras clave.
-- Metadatos del anuncio: título, descripción, fotografías, categoría, etiquetas, precio, ubicación, métodos de contacto, fecha publicación/vencimiento.
+## 1. Árbol principal: identidad y hub
 
-### 2. Mini tienda o catálogo
-El usuario podría convertir determinados enlaces del árbol en productos:
-- Catálogo de productos con variantes y precios.
-- Botón de compra / Pedidos por WhatsApp.
-- Carrito básico y códigos de descuento.
-- Productos destacados y estado de inventario.
+Funciona como tarjeta digital y punto de entrada de toda la cuenta.
 
-### 3. Página de servicios
-- Listado de servicios, tarifas, duración, zonas de atención.
-- FAQ, solicitud de presupuesto, botón para reservar, opiniones de clientes.
+Incluye:
+- Tarjeta digital: nombre, foto, empresa, cargo, teléfono, correo, redes, ubicación.
+- Árbol de enlaces principal.
+- Código QR y guardado de contacto (vCard).
+- Acceso a clasificados, miniweb y campañas.
+- Bloques enriquecidos: enlace, contacto, formulario, archivo, video, galería, reserva, ubicación.
 
-### 4. Sistema de reservas
-- Calendario y horarios disponibles.
-- Reserva de citas, confirmaciones, recordatorios, cancelaciones.
-- Pagos o depósitos, integración con Google Calendar.
+Objetivo:
+- Ser la URL principal para compartir y convertir visitas en navegación hacia los demás módulos.
 
-### 5. Tarjeta digital
-- Nombre, foto, empresa, cargo, teléfono, correo, redes sociales, ubicación.
-- Código QR y botón para guardar el contacto (vCard).
+## 2. Clasificados: publicación y descubrimiento
 
-### 6. Portafolio
-- Proyectos, galería, videos, casos de éxito, antes y después, testimonios.
-- Archivos descargables, formulario para solicitar cotización.
+Espacio transaccional para publicar y descubrir oportunidades.
 
-### 7. Formularios y captación de clientes (CRM)
-- Solicitar info, pedir presupuesto, registrarse, inscribirse, lista de espera, reportar problema, enviar propuesta.
-- Contactos guardados en un panel tipo CRM.
+Incluye:
+- Clasificados tradicionales.
+- Bolsa de necesidades.
+- Promociones y cupones.
+- Donaciones o recaudaciones.
+- Eventos publicados como fichas descubribles.
+- Productos o servicios publicados como anuncios listables.
 
-### 8. Eventos
-- Conferencias, talleres, actividades, deportes, transmisiones, reuniones.
-- Fecha, ubicación, mapa, registro, entradas, recordatorios.
+Capacidades:
+- Búsqueda y orden por fecha, precio, popularidad, ubicación y categoría.
+- Metadatos del anuncio: título, descripción, imágenes, categoría, etiquetas, precio, ubicación, contacto, fecha de publicación y vencimiento.
 
-### 9. Promociones y cupones
-- Ofertas temporales, cupones, descuentos, sorteos, programas de recomendación.
+Objetivo:
+- Maximizar descubrimiento, contacto y publicación dentro del ecosistema.
 
-### 10. Donaciones o recaudaciones
-- Meta, descripción, evidencias, enlaces de pago, donantes destacados, contador.
+## 3. Miniweb: contenido, catálogo y conversión
 
-### 11. Bolsa de necesidades
-- "Busco diseñador", "Necesito alquilar", etc. Permite que la plataforma funcione en ambas direcciones (ofertas y solicitudes).
+Superficie más editorial o comercial para profundizar la propuesta del usuario.
+
+Incluye:
+- Mini tienda o catálogo.
+- Página de servicios.
+- Portafolio.
+- Formularios y captación de clientes (CRM).
+- Reservas y disponibilidad.
+
+Capacidades:
+- Presentación, FAQs, testimonios, galerías y casos de éxito.
+- Productos con precio y variantes.
+- Formularios de contacto, cotización, registro o lista de espera.
+- Reservas, agenda y CTA hacia WhatsApp o correo.
+
+Objetivo:
+- Convertir interés en contacto, reserva, pedido o lead.
+
+## 4. Enlaces cortos: distribución y medición
+
+Canal transversal para campañas y tráfico.
+
+Incluye:
+- Slugs cortos compartibles.
+- Tracking por fuente, medio y campaña.
+- Distribución hacia árbol, clasificados o miniweb.
+
+Objetivo:
+- Medir y optimizar la adquisición de tráfico hacia cualquiera de las otras superficies.
 
 ## Buscador general de la plataforma
-- Indexa: Usuarios, Árboles, Clasificados, Productos, Servicios, Eventos, Categorías, Ubicaciones.
+- Indexa: Usuarios, Árboles, Clasificados, Productos, Servicios, Eventos, Categorías y Ubicaciones.
 - Orden por relevancia, fecha, distancia, precio, popularidad, valoración.
 - Metadatos estructurados obligatorios para facilitar las búsquedas.
 
@@ -68,10 +86,9 @@ El sistema genera el elemento y lo conecta al árbol.
 - Seguir, guardar, compartir, contactar, reportar, comparar, alertas, guardar búsquedas, valorar transacción.
 
 ## Modelo Recomendado
-- Árbol: Identidad y acceso.
-- Clasificados: Publicación y búsqueda.
-- Catálogo: Productos y servicios.
-- Reservas: Citas y disponibilidad.
-- CRM: Contactos y clientes.
-- Analíticas: Métricas.
-- Buscador Global: Descubrimiento de la plataforma.
+- Árbol principal: Identidad y hub.
+- Clasificados: Publicación y descubrimiento.
+- Miniweb: Contenido, catálogo y conversión.
+- Enlaces cortos: Distribución y medición.
+- Analíticas: Métricas transversales.
+- Buscador global: Descubrimiento de toda la plataforma.

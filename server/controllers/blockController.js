@@ -6,6 +6,13 @@
 const prisma = require('../lib/prisma');
 const { AppError } = require('../middleware/errorHandler');
 const { asyncHandler, parseBlockPayload, stringifyPayload } = require('../lib/utils');
+const { isClassifiedBlockType, normalizeKind } = require('../lib/classifiedKinds');
+
+function resolveBlockType(type, fallback = '') {
+  const rawType = String(type ?? fallback).trim();
+  if (!rawType) return '';
+  return isClassifiedBlockType(rawType) ? normalizeKind(rawType) : rawType;
+}
 
 // Obtener todos los bloques públicos de un árbol dado un workspaceId
 exports.getPublicBlocks = asyncHandler(async (req, res) => {
@@ -44,8 +51,10 @@ exports.createBlock = asyncHandler(async (req, res) => {
     throw new AppError('Los campos "type" y "title" son requeridos', 400);
   }
 
-  // Si el bloque es de tipo 'classified', usamos transacción
-  if (type === 'classified') {
+  const normalizedType = resolveBlockType(type);
+
+  // Si el bloque representa una ficha publicable, creamos su clasificado asociado
+  if (isClassifiedBlockType(normalizedType)) {
     if (!classifiedData) {
       throw new AppError('Faltan los datos del anuncio clasificado', 400);
     }
@@ -53,7 +62,7 @@ exports.createBlock = asyncHandler(async (req, res) => {
     const newBlock = await prisma.treeBlock.create({
       data: {
         workspaceId,
-        type,
+        type: normalizedType,
         title,
         order: order ?? 0,
         payload: stringifyPayload(payload),
@@ -64,7 +73,7 @@ exports.createBlock = asyncHandler(async (req, res) => {
             price: classifiedData.price || null,
             currency: classifiedData.currency || 'USD',
             location: classifiedData.location || '',
-            tags: JSON.stringify(classifiedData.tags || []),
+            tags: JSON.stringify(Array.isArray(classifiedData.tags) ? classifiedData.tags : [normalizedType]),
             isFeatured: classifiedData.isFeatured || false
           }
         }
@@ -77,13 +86,13 @@ exports.createBlock = asyncHandler(async (req, res) => {
 
   // Cualquier otro tipo de bloque
   const newBlock = await prisma.treeBlock.create({
-    data: {
-      workspaceId,
-      type,
-      title,
-      order: order ?? 0,
-      payload: stringifyPayload(payload)
-    }
+      data: {
+        workspaceId,
+        type: normalizedType,
+        title,
+        order: order ?? 0,
+        payload: stringifyPayload(payload)
+      }
   });
 
   res.status(201).json(parseBlockPayload(newBlock));
@@ -93,7 +102,7 @@ exports.createBlock = asyncHandler(async (req, res) => {
 exports.updateBlock = asyncHandler(async (req, res) => {
   const workspaceId = req.user.workspaceId;
   const blockId = req.params.id;
-  const { title, isActive, payload, classifiedData } = req.body;
+  const { title, type, isActive, payload, classifiedData } = req.body;
 
   const block = await prisma.treeBlock.findFirst({
     where: { id: blockId, workspaceId }
@@ -102,10 +111,13 @@ exports.updateBlock = asyncHandler(async (req, res) => {
 
   let updatedBlock;
 
-  if (block.type === 'classified' && classifiedData) {
+  const normalizedType = resolveBlockType(type, block.type);
+
+  if (isClassifiedBlockType(block.type) && classifiedData) {
     updatedBlock = await prisma.treeBlock.update({
       where: { id: blockId },
       data: {
+        type: normalizedType,
         title,
         isActive,
         payload: stringifyPayload(payload),
@@ -116,6 +128,7 @@ exports.updateBlock = asyncHandler(async (req, res) => {
             price: classifiedData.price ? parseFloat(classifiedData.price) : null,
             currency: classifiedData.currency,
             location: classifiedData.location,
+            tags: JSON.stringify(Array.isArray(classifiedData.tags) ? classifiedData.tags : [normalizedType]),
             isFeatured: classifiedData.isFeatured || false
           }
         }
@@ -125,7 +138,7 @@ exports.updateBlock = asyncHandler(async (req, res) => {
   } else {
     updatedBlock = await prisma.treeBlock.update({
       where: { id: blockId },
-      data: { title, isActive, payload: stringifyPayload(payload) }
+      data: { title, type: normalizedType, isActive, payload: stringifyPayload(payload) }
     });
   }
 

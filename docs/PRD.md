@@ -2,7 +2,14 @@
 
 ## Visión
 
-Una cuenta empieza con un árbol de enlaces y recibe un subdominio propio. Desde ese espacio genera su presencia digital: clasificados y una miniweb HTML básica. El árbol es la URL principal para compartir por WhatsApp y otros canales.
+Una cuenta empieza con un árbol de enlaces y recibe un subdominio propio. Desde ese espacio genera su presencia digital completa a partir de cuatro superficies base:
+
+1. Árbol principal: identidad, tarjeta digital y hub de navegación.
+2. Clasificados: publicación y descubrimiento.
+3. Miniweb: contenido, catálogo y conversión.
+4. Enlaces cortos: distribución y medición.
+
+El árbol es la URL principal para compartir por WhatsApp y otros canales, y funciona como punto de entrada al resto del ecosistema.
 
 ## Usuarios
 
@@ -12,17 +19,17 @@ Creadores, profesionales, pequeños negocios y organizaciones que necesitan publ
 
 Ejemplo para `orlando.enlacehub.com`:
 
-1. `/`: árbol principal, identidad y acceso a los demás recursos.
-2. `/clasificados`: catálogo público, buscable y ordenable.
-3. `/web`: presentación, servicios, contacto y anuncios destacados.
-4. `/s/{slug}`: enlaces cortos medibles.
+1. `/`: árbol principal, tarjeta digital, enlaces y acceso a los demás recursos.
+2. `/clasificados`: publicación, descubrimiento y contacto sobre anuncios.
+3. `/web`: presentación, servicios, catálogo y formularios.
+4. `/s/{slug}`: enlaces cortos medibles para distribución y campañas.
 
 ## Alcance de la demo
 
-- Gestión local del árbol.
+- Gestión local del árbol principal como identidad y hub.
 - Selección y validación local de un subdominio.
 - Vista previa de las URLs que se crearían en producción.
-- Clasificados locales con búsqueda, filtros y orden.
+- Clasificados locales con búsqueda, filtros, orden y contacto.
 - Miniweb editable y exportable como HTML.
 - Enlace compartible por WhatsApp con atribución de campaña.
 - Analíticas locales de vistas y clics.
@@ -49,10 +56,10 @@ Ejemplo para `orlando.enlacehub.com`:
 
 ## Criterios de aceptación de la demo
 
-- Se puede editar y abrir el árbol.
+- Se puede editar y abrir el árbol principal como tarjeta digital y hub.
 - Se puede definir un subdominio válido y ver las tres URLs resultantes.
 - Se rechazan nombres reservados o inválidos.
-- Se puede crear, buscar, ordenar y contactar desde un clasificado.
+- Se puede crear, buscar, ordenar, descubrir y contactar desde un clasificado.
 - Se puede editar la miniweb y descargar `index.html`.
 - Se puede generar un enlace con `src=whatsapp` y campaña.
 - Solo una carga real de página incrementa las visitas atribuidas.

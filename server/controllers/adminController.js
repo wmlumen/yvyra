@@ -7,6 +7,16 @@ const prisma = require('../lib/prisma');
 const { AppError } = require('../middleware/errorHandler');
 const { asyncHandler } = require('../lib/utils');
 
+async function findAnotherAdmin(userId) {
+  return prisma.user.findFirst({
+    where: {
+      role: 'ADMIN',
+      ...(userId ? { id: { not: userId } } : {})
+    },
+    select: { id: true, email: true, name: true }
+  });
+}
+
 // ─── Métricas ───────────────────────────────────────────────
 
 exports.getStats = asyncHandler(async (req, res) => {
@@ -128,9 +138,15 @@ exports.updateUserRole = asyncHandler(async (req, res) => {
   const targetUser = await prisma.user.findUnique({ where: { id: userId } });
   if (!targetUser) throw new AppError('Usuario no encontrado', 404);
 
-  // No permitir auto-desescalada del último admin
-  if (targetUser.id === req.user.userId && role !== 'ADMIN') {
-    throw new AppError('No puedes cambiar tu propio rol de administrador', 403);
+  if (role === 'ADMIN' && targetUser.role !== 'ADMIN') {
+    const existingAdmin = await findAnotherAdmin(targetUser.id);
+    if (existingAdmin) {
+      throw new AppError(`Ya existe un Superadmin global: ${existingAdmin.email}`, 403);
+    }
+  }
+
+  if (targetUser.role === 'ADMIN' && role !== 'ADMIN') {
+    throw new AppError('El único Superadmin global no puede degradarse desde esta pantalla', 403);
   }
 
   const updated = await prisma.user.update({
@@ -153,7 +169,7 @@ exports.deleteUser = asyncHandler(async (req, res) => {
   }
 
   if (targetUser.role === 'ADMIN') {
-    throw new AppError('No se puede eliminar a otro Súper Administrador', 403);
+    throw new AppError('No se puede eliminar al Superadmin global', 403);
   }
 
   await prisma.user.delete({ where: { id: userId } });

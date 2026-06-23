@@ -97,7 +97,7 @@ export async function searchClassifieds(queryOrOptions = '', category = '') {
     }
   }
 
-  const res = await fetch(`${API_URL}/classifieds/search?${params.toString()}`);
+  const res = await fetch(`${API_URL}/classifieds/search?${params.toString()}`, buildPublicRequestOptions());
   if (!res.ok) throw new Error('Error buscando clasificados');
   return res.json();
 }

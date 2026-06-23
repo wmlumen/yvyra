@@ -47,8 +47,8 @@
       const msg = document.getElementById('login-message');
 
       try {
-        await login(email, password);
-        window.location.href = 'dashboard.html';
+        const session = await login(email, password);
+        window.location.href = session.user?.role === 'ADMIN' ? 'superadmin.html' : 'dashboard.html';
       } catch (err) {
         msg.textContent = err.message || 'Error al iniciar sesión';
         msg.hidden = false;

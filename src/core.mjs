@@ -16,6 +16,16 @@ export const CLASSIFIED_CATEGORIES = [
   'Servicios', 'Empleo', 'Hogar', 'Tecnología', 'Vehículos', 'Otros'
 ];
 
+export const CLASSIFIED_KINDS = [
+  { value: 'classified', label: 'Clasificado tradicional' },
+  { value: 'need', label: 'Bolsa de necesidades' },
+  { value: 'promo', label: 'Promocion o cupon' },
+  { value: 'donation', label: 'Donacion' },
+  { value: 'event', label: 'Evento' },
+  { value: 'product', label: 'Producto' },
+  { value: 'service', label: 'Servicio' }
+];
+
 export const DEFAULT_MINI_SITE = {
   published: true,
   businessName: 'Orlando Velez',
