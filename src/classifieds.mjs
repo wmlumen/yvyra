@@ -118,8 +118,26 @@ function createCard(item) {
     });
   }
 
-  body.append(meta, title, description, facts, contact);
-  article.append(media, body);
+  body.append(meta, title, description, facts);
+  
+  // Enlace al perfil del publicador
+  const poster = document.createElement('div');
+  poster.className = 'classified-poster';
+  if (item.workspace && item.workspace.name) {
+    const tenant = item.workspace.domainMappings?.[0]?.hostname;
+    const profileUrl = tenant ? `profile.html?tenant=${tenant}` : '#';
+    const authorLink = document.createElement('a');
+    authorLink.className = 'poster-link';
+    authorLink.href = profileUrl;
+    authorLink.textContent = `Publicado por ${item.workspace.name}`;
+    if (tenant) {
+      authorLink.target = '_blank';
+      authorLink.rel = 'noopener noreferrer';
+    }
+    poster.append(authorLink);
+  }
+
+  article.append(media, body, contact, poster);
   return article;
 }
 
@@ -133,8 +151,10 @@ function badge(text) {
 function formatPrice(item) {
   if (item.price === null || item.price === '' || !Number.isFinite(Number(item.price))) return 'Consultar precio';
   try {
-    return new Intl.NumberFormat('es', { style: 'currency', currency: item.currency || 'USD' }).format(Number(item.price));
+    const currency = (item.currency || 'USD').replace(/^Gs\.?$/, 'PYG');
+    const locale = currency === 'PYG' ? 'es-PY' : 'es';
+    return new Intl.NumberFormat(locale, { style: 'currency', currency }).format(Number(item.price));
   } catch {
-    return `${Number(item.price).toFixed(2)} ${item.currency || 'USD'}`;
+    return `${Number(item.price).toLocaleString('es')} ${item.currency || 'USD'}`;
   }
 }

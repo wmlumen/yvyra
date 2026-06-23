@@ -24,19 +24,22 @@ const USERS = [
     handle: 'cafearoma',
     bio: '☕ Café de especialidad tostado artesanalmente. Granos de origen único, catas y eventos. ¡Te esperamos!',
     miniSite: {
+      published: true,
+      showClassifieds: true,
       businessName: 'Café Aroma',
-      slogan: 'El aroma que despierta tus sentidos',
-      about: 'Somos una micro-tostadora de café de especialidad. Seleccionamos granos directamente de productores en Chiapas y los tostamos en lotes pequeños para garantizar la máxima frescura.',
+      headline: 'El aroma que despierta tus sentidos',
+      description: 'Somos una micro-tostadora de café de especialidad. Seleccionamos granos directamente de productores en Chiapas y los tostamos en lotes pequeños para garantizar la máxima frescura.',
+      whatsapp: '595981111001',
+      email: 'hola@cafearoma.com',
+      address: 'Av. Rodríguez 1234, Asunción',
+      primaryCtaLabel: 'Ver árbol de enlaces',
+      primaryCtaUrl: 'profile.html?tenant=cafe-aroma',
+      services: ['Café de Origen — Granos 100% arábica', 'Tostado Artesanal — Lotes pequeños', 'Envío Gratis en Asunción'],
       schedule: [
         { day: 'Lun-Vie', hours: '07:00 - 20:00' },
         { day: 'Sáb', hours: '08:00 - 22:00' },
         { day: 'Dom', hours: '09:00 - 18:00' }
       ],
-      contact: {
-        whatsapp: '595981111001',
-        email: 'hola@cafearoma.com',
-        address: 'Av. Rodríguez 1234, Asunción'
-      },
       social: {
         instagram: '@cafearoma',
         facebook: 'cafearomapy'
@@ -63,8 +66,8 @@ const USERS = [
       { title: '🛒 Tienda Online', payload: { url: 'https://cafearoma.com/tienda' }, order: 4 }
     ],
     classifieds: [
-      { category: 'producto', title: 'Café Arábica Premium 250g', price: 45000, currency: 'Gs.', description: 'Café de especialidad tostado artesanalmente. Notas a chocolate amargo y frutos rojos.', tags: ['café', 'arábica', 'premium', 'origen'], location: 'Asunción' },
-      { category: 'servicio', title: 'Taller de Barismo Básico', price: 120000, currency: 'Gs.', description: 'Aprendé a preparar espresso, cappuccino y latte art. Incluye materiales.', tags: ['taller', 'barismo', 'café'], location: 'Asunción' }
+      { category: 'Hogar', title: 'Café Arábica Premium 250g', price: 45000, currency: 'PYG', description: 'Café de especialidad tostado artesanalmente. Notas a chocolate amargo y frutos rojos.', tags: ['café', 'arábica', 'premium', 'origen'], location: 'Asunción' },
+      { category: 'Servicios', title: 'Taller de Barismo Básico', price: 120000, currency: 'PYG', description: 'Aprendé a preparar espresso, cappuccino y latte art. Incluye materiales.', tags: ['taller', 'barismo', 'café'], location: 'Asunción' }
     ],
     shortLinks: [
       { slug: 'wsp-cafe', url: 'https://wa.me/595981111001?text=Hola%20Café%20Aroma' },
@@ -80,19 +83,22 @@ const USERS = [
     handle: 'techfixpro',
     bio: '🔧 Reparación de laptops, PCs y celulares. Servicio técnico rápido y garantizado. 🚀',
     miniSite: {
+      published: true,
+      showClassifieds: true,
       businessName: 'TechFix Pro',
-      slogan: 'Tu tecnología en buenas manos',
-      about: 'Más de 10 años de experiencia en reparación de equipos informáticos. Trabajamos con todas las marcas y ofrecemos garantía escrita en cada reparación.',
+      headline: 'Tu tecnología en buenas manos',
+      description: 'Más de 10 años de experiencia en reparación de equipos informáticos. Trabajamos con todas las marcas y ofrecemos garantía escrita en cada reparación.',
+      whatsapp: '595981222002',
+      email: 'soporte@techfixpro.com',
+      address: 'Calle Estrella 456, Centro',
+      primaryCtaLabel: 'Ver árbol de enlaces',
+      primaryCtaUrl: 'profile.html?tenant=techfix',
+      services: ['Reparación Rápida — Diagnóstico en 30 min', 'Garantía Escrita — 90 días en todas las reparaciones', 'Todas las Marcas — HP, Dell, Apple, Samsung y más'],
       schedule: [
         { day: 'Lun-Vie', hours: '08:00 - 19:00' },
         { day: 'Sáb', hours: '09:00 - 14:00' },
         { day: 'Dom', hours: 'Cerrado' }
       ],
-      contact: {
-        whatsapp: '595981222002',
-        email: 'soporte@techfixpro.com',
-        address: 'Calle Estrella 456, Centro'
-      },
       social: {
         instagram: '@techfixpro',
         facebook: 'techfixpro'
@@ -120,9 +126,9 @@ const USERS = [
       { title: '🎮 Reparación Consolas', payload: { url: 'https://techfixpro.com/consolas' }, order: 5 }
     ],
     classifieds: [
-      { category: 'servicio', title: 'Reparación de Laptop', price: 80000, currency: 'Gs.', description: 'Diagnóstico y reparación de laptops. Cambio de pantalla, teclado, batería y más.', tags: ['laptop', 'reparación', 'tecnología'], location: 'Asunción' },
-      { category: 'servicio', title: 'Mantenimiento PC', price: 50000, currency: 'Gs.', description: 'Limpieza interna, cambio de pasta térmica, optimización de sistema.', tags: ['pc', 'mantenimiento', 'limpieza'], location: 'Asunción' },
-      { category: 'producto', title: 'Cargador Lenovo Original', price: 95000, currency: 'Gs.', description: 'Cargador original Lenovo 65W. Compatible con la mayoría de modelos.', tags: ['cargador', 'lenovo', 'original'], location: 'Asunción' }
+      { category: 'Tecnología', title: 'Reparación de Laptop', price: 80000, currency: 'PYG', description: 'Diagnóstico y reparación de laptops. Cambio de pantalla, teclado, batería y más.', tags: ['laptop', 'reparación', 'tecnología'], location: 'Asunción' },
+      { category: 'Tecnología', title: 'Mantenimiento PC', price: 50000, currency: 'PYG', description: 'Limpieza interna, cambio de pasta térmica, optimización de sistema.', tags: ['pc', 'mantenimiento', 'limpieza'], location: 'Asunción' },
+      { category: 'Hogar', title: 'Cargador Lenovo Original', price: 95000, currency: 'PYG', description: 'Cargador original Lenovo 65W. Compatible con la mayoría de modelos.', tags: ['cargador', 'lenovo', 'original'], location: 'Asunción' }
     ],
     shortLinks: [
       { slug: 'wsp-tech', url: 'https://wa.me/595981222002?text=Hola%20TechFix' },
@@ -139,18 +145,21 @@ const USERS = [
     handle: 'lunaarte',
     bio: '🎨 Ilustraciones, murales y arte digital. Transformo tus ideas en colores. ✨',
     miniSite: {
+      published: true,
+      showClassifieds: true,
       businessName: 'Luna Arte',
-      slogan: 'Donde tus ideas cobran color',
-      about: 'Soy ilustradora y muralista con 5 años de experiencia. Trabajo con técnicas mixtas, arte digital y murales de gran formato. Cada proyecto es una historia única que merece ser contada con colores.',
+      headline: 'Donde tus ideas cobran color',
+      description: 'Soy ilustradora y muralista con 5 años de experiencia. Trabajo con técnicas mixtas, arte digital y murales de gran formato. Cada proyecto es una historia única que merece ser contada con colores.',
+      whatsapp: '595981333003',
+      email: 'hola@lunaarte.com',
+      address: 'ArteCo Espacio, San Lorenzo',
+      primaryCtaLabel: 'Ver árbol de enlaces',
+      primaryCtaUrl: 'profile.html?tenant=luna-arte',
+      services: ['Ilustración Digital — Personajes, retratos y arte conceptual', 'Murales — Pintura interior y exterior', 'Arte Personalizado — Creaciones únicas para tu marca'],
       schedule: [
         { day: 'Lun-Vie', hours: '09:00 - 18:00' },
         { day: 'Sáb', hours: '10:00 - 13:00' }
       ],
-      contact: {
-        whatsapp: '595981333003',
-        email: 'hola@lunaarte.com',
-        address: 'ArteCo Espacio, San Lorenzo'
-      },
       social: {
         instagram: '@lunaarte.py',
         facebook: 'lunaartepy',
@@ -179,9 +188,9 @@ const USERS = [
       { title: '🖼️ Tienda de Prints', payload: { url: 'https://lunaarte.com/tienda' }, order: 5 }
     ],
     classifieds: [
-      { category: 'servicio', title: 'Ilustración Digital Personalizada', price: 150000, currency: 'Gs.', description: 'Ilustración digital en alta resolución. Personajes, retratos o arte conceptual.', tags: ['ilustración', 'digital', 'arte'], location: 'Asunción' },
-      { category: 'servicio', title: 'Mural Decorativo (1m²)', price: 250000, currency: 'Gs.', description: 'Pintura mural decorativa para interior. Incluye diseño personalizado.', tags: ['mural', 'decoración', 'pintura'], location: 'Asunción' },
-      { category: 'producto', title: 'Print Fine Art A3', price: 65000, currency: 'Gs.', description: 'Impresión fine art en papel de algodón 100%. Edición limitada y firmada.', tags: ['print', 'fine-art', 'edición-limitada'], location: 'Asunción' }
+      { category: 'Servicios', title: 'Ilustración Digital Personalizada', price: 150000, currency: 'PYG', description: 'Ilustración digital en alta resolución. Personajes, retratos o arte conceptual.', tags: ['ilustración', 'digital', 'arte'], location: 'Asunción' },
+      { category: 'Servicios', title: 'Mural Decorativo (1m²)', price: 250000, currency: 'PYG', description: 'Pintura mural decorativa para interior. Incluye diseño personalizado.', tags: ['mural', 'decoración', 'pintura'], location: 'Asunción' },
+      { category: 'Hogar', title: 'Print Fine Art A3', price: 65000, currency: 'PYG', description: 'Impresión fine art en papel de algodón 100%. Edición limitada y firmada.', tags: ['print', 'fine-art', 'edición-limitada'], location: 'Asunción' }
     ],
     shortLinks: [
       { slug: 'portafolio', url: 'https://lunaarte.com/portfolio' },

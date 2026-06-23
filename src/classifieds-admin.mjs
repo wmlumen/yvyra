@@ -145,7 +145,7 @@ function edit(item) {
   $('#ad-description').value = item.description;
   $('#ad-category').value = item.category;
   $('#ad-price').value = item.price ?? '';
-  $('#ad-currency').value = item.currency || 'USD';
+  $('#ad-currency').value = item.currency || 'PYG';
   $('#ad-location').value = item.location || '';
   $('#ad-contact').value = item.contactUrl;
   $('#ad-image').value = item.imageUrl || '';
