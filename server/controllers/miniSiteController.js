@@ -11,7 +11,8 @@ const DEFAULT_MINI_SITE = {
   address: 'Atención remota',
   primaryCtaLabel: 'Ver mi árbol de enlaces',
   primaryCtaUrl: '',
-  showClassifieds: true
+  showClassifieds: true,
+  heroImage: '' // URL personalizada de imagen de fondo
 };
 
 /**
@@ -267,8 +268,9 @@ function buildMiniSiteHTML(workspace, config) {
   const avatarUrl = workspace.avatar ? `https://avatar.enlacehub.com/${workspace.avatar}` : '';
   const year = new Date().getFullYear();
   
-  // Fondo hero según handle
-  const heroBgUrl = HERO_BACKGROUNDS[(workspace.handle || '').toLowerCase()] || HERO_DEFAULT;
+  // Fondo hero: usar el personalizado del usuario o el automático según handle
+  const autoHeroBg = HERO_BACKGROUNDS[(workspace.handle || '').toLowerCase()];
+  let heroBgUrl = config.heroImage && config.heroImage.trim() ? config.heroImage.trim() : (autoHeroBg || HERO_DEFAULT);
 
   // JSON-LD Structured Data
   const jsonLd = {

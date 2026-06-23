@@ -88,6 +88,7 @@ function hydrate() {
   $('#site-whatsapp').value = site.whatsapp || '';
   $('#site-email').value = site.email || '';
   $('#site-address').value = site.address || '';
+  $('#site-hero-image').value = site.heroImage || '';
   $('#cta-label').value = site.primaryCtaLabel || 'Ver mi árbol de enlaces';
   $('#cta-url').value = site.primaryCtaUrl || 'index.html';
   $('#show-classifieds').checked = Boolean(site.showClassifieds);
@@ -113,6 +114,7 @@ function readForm() {
     whatsapp: normalizeWhatsAppNumber($('#site-whatsapp').value),
     email: $('#site-email').value.trim(),
     address: $('#site-address').value.trim().slice(0, 160),
+    heroImage: $('#site-hero-image').value.trim(),
     primaryCtaLabel: $('#cta-label').value.trim().slice(0, 80) || 'Ver mi árbol de enlaces',
     primaryCtaUrl: ctaUrl,
     showClassifieds: $('#show-classifieds').checked
