@@ -66,8 +66,8 @@ const USERS = [
       { title: '🛒 Tienda Online', payload: { url: 'https://cafearoma.com/tienda' }, order: 4 }
     ],
     classifieds: [
-      { category: 'Hogar', title: 'Café Arábica Premium 250g', price: 45000, currency: 'PYG', description: 'Café de especialidad tostado artesanalmente. Notas a chocolate amargo y frutos rojos.', tags: ['café', 'arábica', 'premium', 'origen'], location: 'Asunción' },
-      { category: 'Servicios', title: 'Taller de Barismo Básico', price: 120000, currency: 'PYG', description: 'Aprendé a preparar espresso, cappuccino y latte art. Incluye materiales.', tags: ['taller', 'barismo', 'café'], location: 'Asunción' }
+      { category: 'Hogar', title: 'Café Arábica Premium 250g', price: 45000, currency: 'PYG', description: 'Café de especialidad tostado artesanalmente. Notas a chocolate amargo y frutos rojos.', tags: ['café', 'arábica', 'premium', 'origen'], location: 'Asunción', country: 'Paraguay', department: 'Central', city: 'Asunción' },
+      { category: 'Servicios', title: 'Taller de Barismo Básico', price: 120000, currency: 'PYG', description: 'Aprendé a preparar espresso, cappuccino y latte art. Incluye materiales.', tags: ['taller', 'barismo', 'café'], location: 'Asunción', country: 'Paraguay', department: 'Central', city: 'Asunción' }
     ],
     shortLinks: [
       { slug: 'wsp-cafe', url: 'https://wa.me/595981111001?text=Hola%20Café%20Aroma' },
@@ -126,9 +126,9 @@ const USERS = [
       { title: '🎮 Reparación Consolas', payload: { url: 'https://techfixpro.com/consolas' }, order: 5 }
     ],
     classifieds: [
-      { category: 'Tecnología', title: 'Reparación de Laptop', price: 80000, currency: 'PYG', description: 'Diagnóstico y reparación de laptops. Cambio de pantalla, teclado, batería y más.', tags: ['laptop', 'reparación', 'tecnología'], location: 'Asunción' },
-      { category: 'Tecnología', title: 'Mantenimiento PC', price: 50000, currency: 'PYG', description: 'Limpieza interna, cambio de pasta térmica, optimización de sistema.', tags: ['pc', 'mantenimiento', 'limpieza'], location: 'Asunción' },
-      { category: 'Hogar', title: 'Cargador Lenovo Original', price: 95000, currency: 'PYG', description: 'Cargador original Lenovo 65W. Compatible con la mayoría de modelos.', tags: ['cargador', 'lenovo', 'original'], location: 'Asunción' }
+      { category: 'Tecnología', title: 'Reparación de Laptop', price: 80000, currency: 'PYG', description: 'Diagnóstico y reparación de laptops. Cambio de pantalla, teclado, batería y más.', tags: ['laptop', 'reparación', 'tecnología'], location: 'Asunción', country: 'Paraguay', department: 'Central', city: 'Asunción' },
+      { category: 'Tecnología', title: 'Mantenimiento PC', price: 50000, currency: 'PYG', description: 'Limpieza interna, cambio de pasta térmica, optimización de sistema.', tags: ['pc', 'mantenimiento', 'limpieza'], location: 'Asunción', country: 'Paraguay', department: 'Central', city: 'Asunción' },
+      { category: 'Hogar', title: 'Cargador Lenovo Original', price: 95000, currency: 'PYG', description: 'Cargador original Lenovo 65W. Compatible con la mayoría de modelos.', tags: ['cargador', 'lenovo', 'original'], location: 'Asunción', country: 'Paraguay', department: 'Central', city: 'Asunción' }
     ],
     shortLinks: [
       { slug: 'wsp-tech', url: 'https://wa.me/595981222002?text=Hola%20TechFix' },
@@ -188,9 +188,9 @@ const USERS = [
       { title: '🖼️ Tienda de Prints', payload: { url: 'https://lunaarte.com/tienda' }, order: 5 }
     ],
     classifieds: [
-      { category: 'Servicios', title: 'Ilustración Digital Personalizada', price: 150000, currency: 'PYG', description: 'Ilustración digital en alta resolución. Personajes, retratos o arte conceptual.', tags: ['ilustración', 'digital', 'arte'], location: 'Asunción' },
-      { category: 'Servicios', title: 'Mural Decorativo (1m²)', price: 250000, currency: 'PYG', description: 'Pintura mural decorativa para interior. Incluye diseño personalizado.', tags: ['mural', 'decoración', 'pintura'], location: 'Asunción' },
-      { category: 'Hogar', title: 'Print Fine Art A3', price: 65000, currency: 'PYG', description: 'Impresión fine art en papel de algodón 100%. Edición limitada y firmada.', tags: ['print', 'fine-art', 'edición-limitada'], location: 'Asunción' }
+      { category: 'Servicios', title: 'Ilustración Digital Personalizada', price: 150000, currency: 'PYG', description: 'Ilustración digital en alta resolución. Personajes, retratos o arte conceptual.', tags: ['ilustración', 'digital', 'arte'], location: 'San Lorenzo', country: 'Paraguay', department: 'Central', city: 'San Lorenzo' },
+      { category: 'Servicios', title: 'Mural Decorativo (1m²)', price: 250000, currency: 'PYG', description: 'Pintura mural decorativa para interior. Incluye diseño personalizado.', tags: ['mural', 'decoración', 'pintura'], location: 'San Lorenzo', country: 'Paraguay', department: 'Central', city: 'San Lorenzo' },
+      { category: 'Hogar', title: 'Print Fine Art A3', price: 65000, currency: 'PYG', description: 'Impresión fine art en papel de algodón 100%. Edición limitada y firmada.', tags: ['print', 'fine-art', 'edición-limitada'], location: 'San Lorenzo', country: 'Paraguay', department: 'Central', city: 'San Lorenzo' }
     ],
     shortLinks: [
       { slug: 'portafolio', url: 'https://lunaarte.com/portfolio' },

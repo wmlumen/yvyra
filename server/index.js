@@ -41,6 +41,19 @@ app.use(cookieParser());
 if (isProduction) {
   const frontendPath = path.resolve(__dirname, '..');
   console.log(`📁 Sirviendo frontend desde: ${frontendPath}`);
+
+  // Middleware para crawlers (redes sociales, bots): servir SSR con OG tags
+  const botPattern = /facebookexternalhit|twitterbot|whatsapp|telegrambot|slack|discord|googlebot|bingbot|slurp|duckduckbot|baiduspider|yandexbot|facebot|ia_archiver|pinterest|linkedin|slack|viber|line|skypeuri preview/i;
+  app.get(['/profile.html', '/miniweb.html'], (req, res, next) => {
+    const ua = (req.headers['user-agent'] || '').toLowerCase();
+    const tenant = req.query.tenant || req.query.profile || req.query.subdomain || '';
+    if (botPattern.test(ua) && tenant) {
+      // Redirigir al crawler a la versión SSR con meta tags completas
+      return res.redirect(301, `/api/minisite/render?tenant=${encodeURIComponent(tenant)}`);
+    }
+    next();
+  });
+
   app.use(express.static(frontendPath));
   
   // Fallback SPA: cualquier ruta no-API redirige a index.html

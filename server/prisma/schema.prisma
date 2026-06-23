@@ -81,6 +81,9 @@ model Classified {
   price       Float?
   currency    String?
   location    String?
+  country     String?   // País (ej: "Paraguay")
+  department  String?   // Departamento/Estado (ej: "Central")
+  city        String?   // Ciudad (ej: "Asunción")
   description String
   tags        String
   
