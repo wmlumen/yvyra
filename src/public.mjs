@@ -160,6 +160,17 @@ function getSheets() {
   ];
 }
 
+// ── Map de handles → imágenes de fondo Unsplash ──
+const HERO_BACKGROUNDS = {
+  'milibeats': 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=800&h=600&fit=crop&crop=center',
+  'cafe-aroma': 'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=800&h=600&fit=crop&crop=center',
+  'cafearoma': 'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=800&h=600&fit=crop&crop=center',
+  'techfix': 'https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=800&h=600&fit=crop&crop=center',
+  'luna-arte': 'https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=800&h=600&fit=crop&crop=center',
+  'lunaarte': 'https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=800&h=600&fit=crop&crop=center',
+  'default': 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=800&h=600&fit=crop&crop=center'
+};
+
 function renderPage() {
   document.body.dataset.theme = state.profile.theme || 'clean';
   document.title = `${state.profile.name || 'Perfil'} · EnlaceHub`;
@@ -167,6 +178,29 @@ function renderPage() {
   document.querySelector('#profile-name').textContent = state.profile.name || 'EnlaceHub';
   document.querySelector('#handle').textContent = state.profile.handle || '';
   document.querySelector('#bio').textContent = state.profile.bio || '';
+
+  // Fondo del hero según el handle
+  const heroCard = document.querySelector('.profile-hero-card');
+  const handle = (state.profile.handle || '').toLowerCase();
+  const bgUrl = HERO_BACKGROUNDS[handle] || HERO_BACKGROUNDS['default'];
+  heroCard.style.backgroundImage = `url('${bgUrl}')`;
+  heroCard.style.backgroundSize = 'cover';
+  heroCard.style.backgroundPosition = 'center';
+  heroCard.style.position = 'relative';
+  // Overlay oscuro para legibilidad
+  if (!heroCard.querySelector('.hero-overlay')) {
+    const overlay = document.createElement('div');
+    overlay.className = 'hero-overlay';
+    overlay.style.cssText = 'position:absolute;inset:0;border-radius:inherit;background:linear-gradient(to bottom,rgba(0,0,0,0.3),rgba(0,0,0,0.7));z-index:0;pointer-events:none;';
+    heroCard.prepend(overlay);
+  }
+  // Asegurar que el contenido quede sobre el overlay
+  Array.from(heroCard.children).forEach(child => {
+    if (!child.classList.contains('hero-overlay')) {
+      child.style.position = 'relative';
+      child.style.zIndex = '1';
+    }
+  });
 
   const intro = document.querySelector('#profile-intro');
   if (state.profileExperience.intro) {
