@@ -79,8 +79,12 @@ exports.searchClassifieds = async (req, res) => {
         price: item.price,
         currency: item.currency,
         location: item.location,
+        city: item.city || '',
+        department: item.department || '',
+        country: item.country || '',
         featured: item.isFeatured,
         expiresAt: item.expiresAt,
+        createdAt: item.createdAt,
         imageUrl: payload.imageUrl || '',
         contactUrl: payload.contactUrl || '',
         workspace: item.block?.workspace || null
